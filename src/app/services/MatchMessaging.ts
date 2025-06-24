@@ -7,10 +7,18 @@ export type MessageType =
   | 'ALLIANCE_SELECTION' 
   | 'ROBOT_SELECTION';
 
+// Map message types to their corresponding payload types
+export type MessagePayloadMap = {
+  'MATCH_DATA_UPDATE': MatchDataPayload;
+  'VIEW_MODE_CHANGE': ViewModePayload;
+  'ALLIANCE_SELECTION': AllianceSelectionPayload;
+  'ROBOT_SELECTION': RobotSelectionPayload;
+};
+
 // Define the structure of our messages
-export interface MatchMessage {
-  type: MessageType;
-  payload: any;
+export interface MatchMessage<T extends MessageType = MessageType> {
+  type: T;
+  payload: MessagePayloadMap[T];
 }
 
 // Define specific message payloads
@@ -49,13 +57,13 @@ class MatchMessagingService {
   }
   
   // Send a message to all other tabs/windows
-  public sendMessage(type: MessageType, payload: any): void {
-    const message: MatchMessage = { type, payload };
+  public sendMessage<T extends MessageType>(type: T, payload: MessagePayloadMap[T]): void {
+    const message: MatchMessage<T> = { type, payload };
     this.channel.postMessage(message);
   }
   
   // Subscribe to a specific message type
-  public subscribe(type: MessageType, callback: (payload: any) => void): () => void {
+  public subscribe<T extends MessageType>(type: T, callback: (payload: MessagePayloadMap[T]) => void): () => void {
     if (!this.listeners.has(type)) {
       this.listeners.set(type, []);
     }
@@ -75,7 +83,7 @@ class MatchMessagingService {
   }
   
   // Notify all listeners of a specific message type
-  private notifyListeners(type: MessageType, payload: any): void {
+  private notifyListeners<T extends MessageType>(type: T, payload: MessagePayloadMap[T]): void {
     const callbacks = this.listeners.get(type);
     if (callbacks) {
       callbacks.forEach(callback => callback(payload));

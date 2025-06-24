@@ -65,12 +65,7 @@ export default function LivePage() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white overflow-hidden">
-      <div className="h-screen w-screen relative bg-gradient-to-r from-blue-900 via-purple-900 to-red-900 p-4 overflow-hidden">
-        
-        <div className="text-center mb-6 relative z-10">
-          <h1 className="text-5xl font-bold py-2">Match {matchNumber}</h1>
-        </div>
-        
+      <div className="h-screen w-screen relative bg-gradient-to-r from-blue-900 via-purple-900 to-red-900 py-4">
         <AnimatePresence mode="wait">
           {viewMode === 'all' && (
             <AllTeamsView 

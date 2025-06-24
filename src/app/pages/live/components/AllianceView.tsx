@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { TeamData, AllianceType } from '../../../models/TeamData';
 
 interface AllianceViewProps {
@@ -35,9 +36,34 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: index * 0.1 }}
           >
-            <div className="w-1/3 flex justify-center items-center">
-              {team.imageUrl ? (
-                <img src={team.imageUrl} alt={`Team ${team.number}`} className="w-32 h-32 object-contain" />
+            <div className="w-1/3 flex justify-center items-center overflow-visible">
+              {team.number ? (
+                <div className="relative w-48 h-48 overflow-visible">
+                  <Image 
+                    src={`https://firebasestorage.googleapis.com/v0/b/mroc-live-dashboard.firebasestorage.app/o/${team.number}.png?alt=media`}
+                    alt={`Team ${team.number} robot`}
+                    fill
+                    style={{ 
+                      objectFit: 'contain',
+                      objectPosition: 'center bottom',
+                      transform: 'scale(1.6)',
+                      transformOrigin: 'center bottom'
+                    }}
+                    onError={(e) => {
+                      // Fallback to emoji if image fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent) {
+                        const fallback = document.createElement('div');
+                        fallback.className = 'text-7xl';
+                        fallback.textContent = '🤖';
+                        parent.appendChild(fallback);
+                      }
+                    }}
+                  />
+                </div>
               ) : (
                 <div className="text-7xl">🤖</div>
               )}
