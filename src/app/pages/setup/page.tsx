@@ -87,7 +87,7 @@ export default function SetupPage() {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto p-6 max-w-4xl">
         <div className="bg-gradient-to-r from-blue-900 via-purple-900 to-red-900 p-6 rounded-lg shadow-lg mb-8">
-          <h1 className="text-4xl font-bold text-center mb-2">FIRST Robotics Match Setup</h1>
+          <h1 className="text-4xl font-bold text-center mb-2">MROC Live Match Setup</h1>
           <p className="text-center text-gray-300">Enter match and team information</p>
         </div>
         
