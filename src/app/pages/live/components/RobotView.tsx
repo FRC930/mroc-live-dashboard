@@ -1,0 +1,97 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { TeamData, AllianceType } from '../../../models/TeamData';
+
+interface RobotViewProps {
+  team: TeamData;
+  alliance: AllianceType;
+}
+
+export default function RobotView({ team, alliance }: RobotViewProps) {
+  return (
+    <motion.div
+      key="robot-view"
+      className="h-[calc(100vh-8rem)] relative z-10 w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className={`${alliance === 'blue' ? 'bg-blue-900' : 'bg-red-900'} bg-opacity-70 rounded-lg shadow-lg p-6 border-2 ${alliance === 'blue' ? 'border-blue-700' : 'border-red-700'}`}>
+        <h2 className="text-4xl font-bold text-center mb-6">Team {team.number || '?'}</h2>
+        
+        <div className="flex flex-col md:flex-row gap-8">
+          <motion.div 
+            className="w-full md:w-1/3 flex justify-center items-start"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            {team.imageUrl ? (
+              <img src={team.imageUrl} alt={`Team ${team.number}`} className="w-64 h-64 object-contain" />
+            ) : (
+              <div className="text-9xl">🤖</div>
+            )}
+          </motion.div>
+          
+          <div className="w-full md:w-2/3">
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="bg-gray-800 bg-opacity-50 p-4 rounded">
+                <h3 className="text-xl font-bold mb-2">Team Stats</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <div className="text-sm opacity-70">Wins</div>
+                    <div className="text-xl font-bold">{team.stats?.wins || '0'}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm opacity-70">Losses</div>
+                    <div className="text-xl font-bold">{team.stats?.losses || '0'}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm opacity-70">Ranking</div>
+                    <div className="text-xl font-bold">{team.stats?.ranking || 'N/A'}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm opacity-70">Status</div>
+                    <div className="text-xl font-bold">Ready</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-gray-800 bg-opacity-50 p-4 rounded">
+                <h3 className="text-xl font-bold mb-2">Robot Info</h3>
+                <div className="space-y-2">
+                  <div>
+                    <div className="text-sm opacity-70">Weight</div>
+                    <div className="text-xl font-bold">120 lbs</div>
+                  </div>
+                  <div>
+                    <div className="text-sm opacity-70">Height</div>
+                    <div className="text-xl font-bold">4 ft</div>
+                  </div>
+                  <div>
+                    <div className="text-sm opacity-70">Drive Train</div>
+                    <div className="text-xl font-bold">Swerve</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-gray-800 bg-opacity-50 p-4 rounded md:col-span-2">
+                <h3 className="text-xl font-bold mb-2">Notes</h3>
+                <div className="text-md">
+                  {team.stats?.notes || 'No notes available for this team.'}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
