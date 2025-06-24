@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { TeamData, AllianceType, ViewMode } from '../../models/TeamData';
@@ -10,7 +9,6 @@ import AllianceView from './components/AllianceView';
 import RobotView from './components/RobotView';
 
 export default function LivePage() {
-  const router = useRouter();
   const [matchNumber, setMatchNumber] = useState('');
   const [blueTeams, setBlueTeams] = useState<TeamData[]>([]);
   const [redTeams, setRedTeams] = useState<TeamData[]>([]);
@@ -27,35 +25,8 @@ export default function LivePage() {
     }
   };
 
-  // Initial data load from localStorage (only once on component mount)
-  const loadInitialData = () => {
-    try {
-      const storedMatchNumber = localStorage.getItem('matchNumber');
-      if (storedMatchNumber) {
-        setMatchNumber(storedMatchNumber);
-      }
-
-      const storedBlueTeams = localStorage.getItem('blueTeams');
-      if (storedBlueTeams) {
-        const parsedBlueTeams = JSON.parse(storedBlueTeams);
-        setBlueTeams(parsedBlueTeams.map((number: string) => ({ number })));
-      }
-
-      const storedRedTeams = localStorage.getItem('redTeams');
-      if (storedRedTeams) {
-        const parsedRedTeams = JSON.parse(storedRedTeams);
-        setRedTeams(parsedRedTeams.map((number: string) => ({ number })));
-      }
-    } catch (error) {
-      console.error('Error loading data from localStorage:', error);
-    }
-  };
-
   // Set up messaging service subscriptions
   useEffect(() => {
-    // Load initial data once
-    loadInitialData();
-    
     const messagingService = getMatchMessagingService();
     
     // Subscribe to match data updates

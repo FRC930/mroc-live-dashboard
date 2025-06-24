@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { TeamData, AllianceType } from '../../models/TeamData';
+import { AllianceType } from '../../models/TeamData';
 import { getMatchMessagingService } from '../../services/MatchMessaging';
 
 export default function SetupPage() {
@@ -17,43 +17,17 @@ export default function SetupPage() {
     const newBlueTeams = [...blueTeams];
     newBlueTeams[index] = value;
     setBlueTeams(newBlueTeams);
-    
-    localStorage.setItem('blueTeams', JSON.stringify(newBlueTeams));
   };
 
   const handleRedTeamChange = (index: number, value: string) => {
     const newRedTeams = [...redTeams];
     newRedTeams[index] = value;
     setRedTeams(newRedTeams);
-    
-    localStorage.setItem('redTeams', JSON.stringify(newRedTeams));
   };
 
   const handleMatchNumberChange = (value: string) => {
     setMatchNumber(value);
-    localStorage.setItem('matchNumber', value);
   };
-
-  useEffect(() => {
-    try {
-      const storedMatchNumber = localStorage.getItem('matchNumber');
-      if (storedMatchNumber) {
-        setMatchNumber(storedMatchNumber);
-      }
-
-      const storedBlueTeams = localStorage.getItem('blueTeams');
-      if (storedBlueTeams) {
-        setBlueTeams(JSON.parse(storedBlueTeams));
-      }
-
-      const storedRedTeams = localStorage.getItem('redTeams');
-      if (storedRedTeams) {
-        setRedTeams(JSON.parse(storedRedTeams));
-      }
-    } catch (error) {
-      console.error('Error loading data from localStorage:', error);
-    }
-  }, []);
 
   const pushUpdates = () => {
     setIsLoading(true);
@@ -75,11 +49,6 @@ export default function SetupPage() {
 
   const goToLive = () => {
     setIsLoading(true);
-    
-    // Save to localStorage for persistence
-    localStorage.setItem('matchNumber', matchNumber);
-    localStorage.setItem('blueTeams', JSON.stringify(blueTeams));
-    localStorage.setItem('redTeams', JSON.stringify(redTeams));
     
     // Send update via messaging service before navigating
     const messagingService = getMatchMessagingService();
