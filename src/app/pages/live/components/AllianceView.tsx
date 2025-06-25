@@ -21,8 +21,8 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className={`bg-gradient-to-r from-${allianceColor}-900 to-purple-900 p-6 rounded-lg shadow-lg mb-6 border-2 border-${allianceColor}-700`}>
-        <h2 className="text-4xl font-bold text-center mb-2">
+      <div className={` p-6 rounded-lg shadow-lg mb-6 border-2 border-${allianceColor}-700 bg-transparent `}>
+        <h2 className="text-4xl font-bold text-center mb-2 " >
           {alliance === 'blue' ? 'BLUE ALLIANCE' : 'RED ALLIANCE'}
         </h2>
       </div>
@@ -69,23 +69,21 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
               )}
             </div>
             <div className="w-2/3 pl-6">
-              <h3 className="text-3xl font-bold mb-2">Team {team.number || '?'}</h3>
+            {/* This is a placeholder for location- pull from firebase */}
+              <h3 className="text-3xl font-bold mb-2">Team {team.number || '?'} | Mukwonago, WI</h3>
+              
               <div className="grid grid-cols-2 gap-2">
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
-                  <div className="text-sm opacity-70">Wins</div>
+                  <div className="text-sm opacity-70">Record</div>
                   <div className="text-xl font-bold">{team.stats?.wins || '0'}</div>
                 </div>
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
-                  <div className="text-sm opacity-70">Losses</div>
+                  <div className="text-sm opacity-70">Ranking</div>
                   <div className="text-xl font-bold">{team.stats?.losses || '0'}</div>
                 </div>
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
-                  <div className="text-sm opacity-70">Ranking</div>
+                  <div className="text-sm opacity-70">Rookie Year</div>
                   <div className="text-xl font-bold">{team.stats?.ranking || 'N/A'}</div>
-                </div>
-                <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
-                  <div className="text-sm opacity-70">Status</div>
-                  <div className="text-xl font-bold">Ready</div>
                 </div>
               </div>
             </div>

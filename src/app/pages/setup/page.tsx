@@ -190,7 +190,7 @@ export default function SetupPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button 
                 onClick={showAllTeamsView}
-                className="bg-purple-800 hover:bg-purple-700 text-white px-4 py-2 rounded-md"
+                className="bg-purple-800 hover:bg-purple-700 text-white px-4 py-2 rounded-md "
               >
                 Show All Teams
               </button>

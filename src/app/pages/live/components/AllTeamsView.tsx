@@ -17,9 +17,9 @@ export default function AllTeamsView({
   const allTeams = [...blueTeams, ...redTeams];
   
   // Calculate skew angle and other styling parameters
-  const blueSkewAngle = 7; // degrees (positive for blue alliance)
-  const redSkewAngle = -7; // degrees (negative for red alliance)
-  const columnGap = 20; // pixels
+  const blueSkewAngle = 12.5; // degrees (positive for blue alliance)
+  const redSkewAngle = -12.5; // degrees (negative for red alliance)
+  const columnGap = 40; // pixels
   // Use 90% of the width instead of 100% to prevent outer columns from being cut off
   const columnWidth = `calc((90% - ${(allTeams.length - 1) * columnGap}px) / ${allTeams.length})`;
   
@@ -131,7 +131,7 @@ export default function AllTeamsView({
         })}
         
         <div className="absolute left-1/2 top-1/6 transform -translate-x-1/2 -translate-y-1/2 z-20">
-          <div className="text-6xl font-bold text-white bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent animate-pulse">
+          <div className="text-7xl font-bold text-white bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent animate-pulse">
             VS
           </div>
         </div>
