@@ -20,7 +20,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
       transition={{ duration: 0.5 }}
     >
       <div className={`${alliance === 'blue' ? 'bg-blue-900' : 'bg-red-900'} bg-opacity-70 rounded-lg shadow-lg p-6 border-2 ${alliance === 'blue' ? 'border-blue-700' : 'border-red-700'}`}>
-        <h2 className="text-4xl font-bold text-center mb-6">Team {team.number || '?'} | Mukwonago, WI</h2>
+        <h2 className="text-4xl font-bold text-center mb-6">Team {team.number || '?'} | {team.location || 'Location not found'}</h2>
         
         <div className="flex flex-col md:flex-row gap-8">
           <motion.div 
@@ -78,15 +78,15 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                   </div>
                   <div>
                     <div className="text-sm opacity-70">Record</div>
-                    <div className="text-xl font-bold">{team.stats?.wins || '0-0-0'}</div>
+                    <div className="text-xl font-bold">{team.stats?.record || '0-0-0'}</div>
                   </div>
                   <div>
                     <div className="text-sm opacity-70">School</div>
-                    <div className="text-xl font-bold">Mukwonago High School</div>
+                    <div className="text-xl font-bold">{team.stats?.school || 'School not found'}</div>
                   </div>
                   <div>
                     <div className="text-sm opacity-70">Robot Name</div>
-                    <div className="text-xl font-bold">Bearaccuda</div>
+                    <div className="text-xl font-bold">{team.stats?.robotName || 'Robot name not found'}</div>
                   </div>
                 </div>
               </div>
