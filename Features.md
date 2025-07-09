@@ -22,4 +22,11 @@ Team stats, scores, etc.
 - Goofy info
   - Feet of wire
   - Amount of solder
-- 
+
+### Firestore DB naming
+- EPA (number)
+- events (string)
+- location (string)
+- name (string)
+- rank (number)
+- robot_name (string)

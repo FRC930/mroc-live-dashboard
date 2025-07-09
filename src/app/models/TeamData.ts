@@ -14,6 +14,8 @@ export interface TeamData {
     school?: string;
     totalRP?: number;
     avgMatchScore?: number;
+    description?: string;
+    EPA?: number;
   };
 }
 
