@@ -74,19 +74,19 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
               <div className="grid grid-cols-2 gap-2">
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
                   <div className="text-sm opacity-70">Record</div>
-                  <div className="text-xl font-bold">{team.stats?.record || '0-0-0'}</div>
+                  <div className="text-xl font-bold">{(team as any).record || '0-0-0'}</div>
                 </div>
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
                   <div className="text-sm opacity-70">Ranking</div>
-                  <div className="text-xl font-bold">{team.stats?.ranking || 'Rank not found'}</div>
+                  <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
                 </div>
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
                   <div className="text-sm opacity-70">Total Rank Points</div>
-                  <div className="text-xl font-bold">{team.stats?.totalRP || '0'}</div>
+                  <div className="text-xl font-bold">{(team as any).totalRP || '0'}</div>
                 </div>
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
                   <div className="text-sm opacity-70">Average Match</div>
-                  <div className="text-xl font-bold">{team.stats?.avgMatchScore || '0'}</div>
+                  <div className="text-xl font-bold">{(team as any).avgMatchScore || '0'}</div>
                 </div>
               </div>
             </div>

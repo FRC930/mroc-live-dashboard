@@ -87,7 +87,8 @@ export default function AllTeamsView({
                   }}
                 >
                   {team.number || '----'}
-                  
+                  <br />
+                  {team.rank}
                 </div>
                   
                 <div

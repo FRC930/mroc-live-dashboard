@@ -1,23 +1,39 @@
+/**
+ * TeamData interface that directly matches the Firestore structure
+ * with team numbers as document IDs
+ */
 export interface TeamData {
   number: string;
-  imageUrl?: string;
+  EPA?: number;
+  events?: string;
   location?: string;
-  // Placeholder for future stats
-  stats?: {
-    wins?: number;
-    losses?: number;
-    ties?: number;
-    record?: number;
-    ranking?: number;
-    notes?: string;
-    robotName?: string;
-    school?: string;
-    totalRP?: number;
-    avgMatchScore?: number;
-    description?: string;
-    EPA?: number;
+  name?: string;
+  rank?: number;
+  robot_name?: string;
+  imageUrl?: string; // Additional field for UI purposes
+}
+
+/**
+ * Helper functions for team data operations
+ */
+export function createEmptyTeam(teamNumber: string): TeamData {
+  return {
+    number: teamNumber,
+    EPA: 0,
+    events: '',
+    location: '',
+    name: '',
+    rank: 0,
+    robot_name: ''
   };
 }
 
+/**
+ * Alliance types for team grouping
+ */
 export type AllianceType = 'blue' | 'red';
+
+/**
+ * View modes for team display
+ */
 export type ViewMode = 'all' | 'alliance' | 'robot';

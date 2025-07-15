@@ -74,19 +74,19 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                 <div className="grid grid-cols-2 gap-2">
                 <div>
                     <div className="text-sm opacity-70">Ranking</div>
-                    <div className="text-xl font-bold">{team.stats?.ranking || 'Rank not found'}</div>
+                    <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
                   </div>
                   <div>
                     <div className="text-sm opacity-70">Record</div>
-                    <div className="text-xl font-bold">{team.stats?.record || '0-0-0'}</div>
+                    <div className="text-xl font-bold">{(team as any).record || '0-0-0'}</div>
                   </div>
                   <div>
                     <div className="text-sm opacity-70">School</div>
-                    <div className="text-xl font-bold">{team.stats?.school || 'School not found'}</div>
+                    <div className="text-xl font-bold">{(team as any).school || 'School not found'}</div>
                   </div>
                   <div>
                     <div className="text-sm opacity-70">Robot Name</div>
-                    <div className="text-xl font-bold">{team.stats?.robotName || 'Robot name not found'}</div>
+                    <div className="text-xl font-bold">{team.robot_name || 'Robot name not found'}</div>
                   </div>
                 </div>
               </div>
@@ -116,7 +116,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
               <div className="bg-gray-800 bg-opacity-50 p-4 rounded md:col-span-2">
                 <h3 className="text-xl font-bold mb-2">Notes</h3>
                 <div className="text-md">
-                  {team.stats?.notes || 'No notes available for this team.'}
+                  {(team as any).notes || 'No notes available for this team.'}
                 </div>
               </div>
             </motion.div>
