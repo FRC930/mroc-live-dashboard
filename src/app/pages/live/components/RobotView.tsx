@@ -77,13 +77,14 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                     <div className="text-xl font-bold">{(team as any).record || '0-0-0'}</div>
                   </div>
                   <div>
-                    <div className="text-sm opacity-70">Ranking</div>
-                    <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
-                  </div>
-                  <div>
                     <div className="text-sm opacity-70">Location</div>
                     <div className="text-xl font-bold">{(team as any).location || 'Location not found'}</div>
                   </div>
+                  <div>
+                    <div className="text-sm opacity-70">Ranking</div>
+                    <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
+                  </div>
+                  
                   <div>
                     <div className="text-sm opacity-70">Robot Name</div>
                     <div className="text-xl font-bold">{team.robot_name || 'Robot name not found'}</div>
