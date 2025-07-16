@@ -69,7 +69,7 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
             </div>
             <div className="w-2/3 pl-6">
               {/* This is a placeholder for location- pull from firebase */}
-              <h3 className="text-3xl font-bold mb-2">Team {team.number || '?'} | {team.location || 'Location not found'}</h3>
+              <h3 className="text-3xl font-bold mb-2">Team {team.number || '?'} | {team.name || 'Name not found'}</h3>
 
               <div className="grid grid-cols-2 gap-2">
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
@@ -81,12 +81,12 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
                   <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
                 </div>
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
-                  <div className="text-sm opacity-70">Total Rank Points</div>
-                  <div className="text-xl font-bold">{(team as any).totalRP || '0'}</div>
+                  <div className="text-sm opacity-70">Location</div>
+                  <div className="text-xl font-bold">{(team as any).location || 'No location found'}</div>
                 </div>
                 <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
-                  <div className="text-sm opacity-70">Average Match</div>
-                  <div className="text-xl font-bold">{(team as any).avgMatchScore || '0'}</div>
+                  <div className="text-sm opacity-70">Robot Name</div>
+                  <div className="text-xl font-bold">{(team as any).robot_name || 'No robot name found'}</div>
                 </div>
               </div>
             </div>

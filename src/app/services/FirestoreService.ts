@@ -33,7 +33,7 @@ export class FirestoreService {
         return {
           number: doc.id,
           EPA: data.EPA,
-          events: data.events,
+          notes: data.notes,
           location: data.location,
           name: data.name,
           rank: data.rank,
@@ -62,7 +62,7 @@ export class FirestoreService {
       return {
         number: teamNumber,
         EPA: data.EPA,
-        events: data.events,
+        notes: data.notes,
         location: data.location,
         name: data.name,
         rank: data.rank,

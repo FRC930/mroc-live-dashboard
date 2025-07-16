@@ -5,7 +5,7 @@
 export interface TeamData {
   number: string;
   EPA?: number;
-  events?: string;
+  notes?: string;
   location?: string;
   name?: string;
   rank?: number;
@@ -20,7 +20,7 @@ export function createEmptyTeam(teamNumber: string): TeamData {
   return {
     number: teamNumber,
     EPA: 0,
-    events: '',
+    notes: '',
     location: '',
     name: '',
     rank: 0,

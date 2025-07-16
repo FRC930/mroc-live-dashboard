@@ -20,10 +20,10 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
       transition={{ duration: 0.5 }}
     >
       <div className={`${alliance === 'blue' ? 'bg-blue-900' : 'bg-red-900'} bg-opacity-70 rounded-lg shadow-lg p-6 border-2 ${alliance === 'blue' ? 'border-blue-700' : 'border-red-700'}`}>
-        <h2 className="text-4xl font-bold text-center mb-6">Team {team.number || '?'} | {team.location || 'Location not found'}</h2>
-        
+        <h2 className="text-4xl font-bold text-center mb-6">Team {team.number || '?'} | {(team).name || '?'} </h2>
+
         <div className="flex flex-col md:flex-row gap-8">
-          <motion.div 
+          <motion.div
             className="w-full md:w-1/3 flex justify-center items-start"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -31,11 +31,11 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
           >
             {team.number ? (
               <div className="relative w-96 h-96 overflow-visible">
-                <Image 
+                <Image
                   src={`https://firebasestorage.googleapis.com/v0/b/mroc-live-dashboard.firebasestorage.app/o/${team.number}.png?alt=media`}
                   alt={`Team ${team.number} robot`}
                   fill
-                  style={{ 
+                  style={{
                     objectFit: 'contain',
                     objectPosition: 'center bottom',
                     transform: 'scale(1.8)',
@@ -60,11 +60,11 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
               <div className="text-9xl">🤖</div>
             )}
           </motion.div>
-          
+
           <div className="w-full md:w-2/3">
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 md:col-span gap-4 "
-            
+
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
@@ -72,17 +72,17 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
               <div className="bg-gray-800 bg-opacity-50 p-4 rounded md:col-span-2">
                 <h3 className="text-xl font-bold mb-2">Team Stats</h3>
                 <div className="grid grid-cols-2 gap-2">
-                <div>
-                    <div className="text-sm opacity-70">Ranking</div>
-                    <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
-                  </div>
                   <div>
                     <div className="text-sm opacity-70">Record</div>
                     <div className="text-xl font-bold">{(team as any).record || '0-0-0'}</div>
                   </div>
                   <div>
-                    <div className="text-sm opacity-70">School</div>
-                    <div className="text-xl font-bold">{(team as any).school || 'School not found'}</div>
+                    <div className="text-sm opacity-70">Ranking</div>
+                    <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm opacity-70">Location</div>
+                    <div className="text-xl font-bold">{(team as any).location || 'Location not found'}</div>
                   </div>
                   <div>
                     <div className="text-sm opacity-70">Robot Name</div>
@@ -90,7 +90,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                   </div>
                 </div>
               </div>
-              
+
               {/* <div className="bg-gray-800 bg-opacity-50 p-4 rounded grid ">
                 <h3 className="text-xl font-bold mb-2 ">Robot Info</h3>
                 <div className="space-y-2 grid grid-cols-2 gap-2">
@@ -112,7 +112,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                   </div>
                 </div>
               </div> */}
-              
+
               <div className="bg-gray-800 bg-opacity-50 p-4 rounded md:col-span-2">
                 <h3 className="text-xl font-bold mb-2">Notes</h3>
                 <div className="text-md">
