@@ -35,7 +35,7 @@ export default function AllTeamsView({
       
       {/* Main container for all slanted columns */}
 
-      <div className="flex justify-center items-stretch h-full w-full px-8">
+      <div className="flex justify-center items-stretch h-full w-full px-6">
         
         {allTeams.map((team, index) => {
           const isBlue = index < 3;
@@ -88,7 +88,7 @@ export default function AllTeamsView({
                 >
                   {team.number || '----'}
                   <br />
-                  {team.rank}
+                  Rank {team.rank}
                 </div>
                   
                 <div

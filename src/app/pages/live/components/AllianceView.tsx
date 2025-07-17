@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { TeamData, AllianceType } from '../../../models/TeamData';
 
+
 interface AllianceViewProps {
   teams: TeamData[];
   alliance: AllianceType;
@@ -26,7 +27,9 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
       </div>
 
       <div className="space-y-4">
+        
         {teams.map((team, index) => (
+          
           <motion.div
             key={`team-${index}`}
             className={`flex items-center p-4 mb-4 rounded-lg shadow-md border ${allianceColor === 'blue' ? 'bg-blue-900 bg-opacity-50 border-blue-700' : 'bg-red-900 bg-opacity-50 border-red-700'}`}
@@ -58,7 +61,7 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
                         fallback.className = 'text-7xl';
                         fallback.textContent = '🤖';
                         parent.appendChild(fallback);
-
+                        
                       }
                     }}
                   />
@@ -68,7 +71,6 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
               )}
             </div>
             <div className="w-2/3 pl-6">
-              {/* This is a placeholder for location- pull from firebase */}
               <h3 className="text-3xl font-bold mb-2">Team {team.number || '?'} | {team.name || 'Name not found'}</h3>
 
               <div className="grid grid-cols-2 gap-2">

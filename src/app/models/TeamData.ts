@@ -16,7 +16,7 @@ export interface TeamData {
 /**
  * Helper functions for team data operations
  */
-export function createEmptyTeam(teamNumber: string): TeamData {
+export function createEmptyTeam(teamNumber: string ): TeamData {
   return {
     number: teamNumber,
     EPA: 0,

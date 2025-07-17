@@ -99,7 +99,7 @@ export default function SetupPage() {
               value={matchNumber}
               onChange={(e) => handleMatchNumberChange(e.target.value)}
               className="w-full bg-gray-700 text-white border border-gray-600 rounded-md py-3 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="Enter match number"
+              placeholder={"Enter match number"}
             />
           </div>
           
