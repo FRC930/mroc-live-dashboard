@@ -31,7 +31,7 @@ export default function SetupPage() {
 
   const pushUpdates = () => {
     setIsLoading(true);
-    
+
     // Send update via messaging service
     const messagingService = getMatchMessagingService();
     messagingService.updateMatchData({
@@ -39,7 +39,7 @@ export default function SetupPage() {
       blueTeams: blueTeams.map(number => ({ number })),
       redTeams: redTeams.map(number => ({ number }))
     });
-    
+
     setIsPushSuccess(true);
     setTimeout(() => {
       setIsPushSuccess(false);
@@ -49,7 +49,7 @@ export default function SetupPage() {
 
   const goToLive = () => {
     setIsLoading(true);
-    
+
     // Send update via messaging service before navigating
     const messagingService = getMatchMessagingService();
     messagingService.updateMatchData({
@@ -57,27 +57,27 @@ export default function SetupPage() {
       blueTeams: blueTeams.map(number => ({ number })),
       redTeams: redTeams.map(number => ({ number }))
     });
-    
+
     // Navigate to live page
     router.push('/pages/live');
   };
-  
+
   // Control functions for the live page view modes
   const showAllTeamsView = () => {
     const messagingService = getMatchMessagingService();
     messagingService.changeViewMode('all');
   };
-  
+
   const showBlueAllianceView = () => {
     const messagingService = getMatchMessagingService();
     messagingService.selectAlliance('blue');
   };
-  
+
   const showRedAllianceView = () => {
     const messagingService = getMatchMessagingService();
     messagingService.selectAlliance('red');
   };
-  
+
   const showRobotView = (alliance: AllianceType, teamIndex: number) => {
     const messagingService = getMatchMessagingService();
     messagingService.selectRobot(alliance, teamIndex);
@@ -90,7 +90,7 @@ export default function SetupPage() {
           <h1 className="text-4xl font-bold text-center mb-2">MROC Live Match Setup</h1>
           <p className="text-center text-gray-300">Enter match and team information</p>
         </div>
-        
+
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
           <div className="mb-6">
             <label className="block text-gray-300 mb-2 text-lg">Match Number</label>
@@ -102,7 +102,7 @@ export default function SetupPage() {
               placeholder={"Enter match number"}
             />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div className="bg-blue-900 bg-opacity-50 p-4 rounded-lg border border-blue-700">
               <h2 className="text-2xl font-bold mb-4 text-blue-300 text-center">Blue Alliance</h2>
@@ -119,7 +119,7 @@ export default function SetupPage() {
                 </div>
               ))}
             </div>
-            
+
             <div className="bg-red-900 bg-opacity-50 p-4 rounded-lg border border-red-700">
               <h2 className="text-2xl font-bold mb-4 text-red-300 text-center">Red Alliance</h2>
               {redTeams.map((team, index) => (
@@ -136,9 +136,9 @@ export default function SetupPage() {
               ))}
             </div>
           </div>
-          
+
           <div className="flex justify-center gap-4 mt-8">
-            <button 
+            <button
               onClick={pushUpdates}
               className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
@@ -159,8 +159,8 @@ export default function SetupPage() {
                 </>
               )}
             </button>
-            
-            <button 
+
+            <button
               onClick={goToLive}
               disabled={isLoading}
               className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -183,31 +183,36 @@ export default function SetupPage() {
                 </>
               )}
             </button>
+            <button
+            // onClick={}
+            className="bg-green-400 hover:bg-slate-400 text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span>Chroma-Key Background</span>
+            </button>
           </div>
-          
+
           <div className="mt-8 border-t border-gray-700 pt-6">
             <h3 className="text-xl font-bold mb-4 text-center">Live View Controls</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <button 
+              <button
                 onClick={showAllTeamsView}
                 className="bg-purple-800 hover:bg-purple-700 text-white px-4 py-2 rounded-md "
               >
                 Show All Teams
               </button>
-              <button 
+              <button
                 onClick={showBlueAllianceView}
                 className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
               >
                 Show Blue Alliance
               </button>
-              <button 
+              <button
                 onClick={showRedAllianceView}
                 className="bg-red-800 hover:bg-red-700 text-white px-4 py-2 rounded-md"
               >
                 Show Red Alliance
               </button>
             </div>
-            
+
             <div className="mt-4 grid grid-cols-2 gap-4">
               <div>
                 <h4 className="text-lg font-bold mb-2 text-blue-300">Blue Alliance Robots</h4>
@@ -223,7 +228,7 @@ export default function SetupPage() {
                   ))}
                 </div>
               </div>
-              
+
               <div>
                 <h4 className="text-lg font-bold mb-2 text-red-300">Red Alliance Robots</h4>
                 <div className="grid grid-cols-3 gap-2">
