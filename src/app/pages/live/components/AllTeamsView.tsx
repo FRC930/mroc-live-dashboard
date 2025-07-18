@@ -88,9 +88,11 @@ export default function AllTeamsView({
                 >
                   {team.number || '----'}
                   <br />
-                  Rank {team.rank}
-                </div>
                   
+                </div>
+                <div className="text-3xl md:text-3xl font-bold mb-4 text-gray-300">
+                  Rank {team.rank || '?'}
+                  </div>
                 <div
                   className="flex-grow flex items-center justify-center w-full"
                   style={{
