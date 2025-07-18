@@ -17,9 +17,9 @@ export default function AllTeamsView({
   const allTeams = [...blueTeams, ...redTeams];
 
   // Calculate skew angle and other styling parameters
-  const blueSkewAngle = 12.5; // degrees (positive for blue alliance)
-  const redSkewAngle = -12.5; // degrees (negative for red alliance)
-  const columnGap = 40; // pixels
+  const blueSkewAngle = 0; // degrees (positive for blue alliance)
+  const redSkewAngle = 0; // degrees (negative for red alliance)
+  const columnGap = 10; // pixels
   // Use 90% of the width instead of 100% to prevent outer columns from being cut off
   const columnWidth = `calc((90% - ${(allTeams.length - 1) * columnGap}px) / ${allTeams.length})`;
 
@@ -88,8 +88,12 @@ export default function AllTeamsView({
                 >
                   {team.number || '----'}
                   <br />
-                  Rank {team.rank}
+                  
+                     
                 </div>
+                <div className="text-3xl md:text-3xl font-bold mb-4 text-gray-300">
+                  Rank {team.rank || '?'}
+                  </div>
                   
                 <div
                   className="flex-grow flex items-center justify-center w-full"
