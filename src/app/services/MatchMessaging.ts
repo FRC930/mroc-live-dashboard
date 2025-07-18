@@ -1,18 +1,20 @@
 import { TeamData, AllianceType, ViewMode } from '../models/TeamData';
+import { io, Socket } from 'socket.io-client';
 
 // Define message types for our application
-export type MessageType = 
-  | 'MATCH_DATA_UPDATE' 
-  | 'VIEW_MODE_CHANGE' 
-  | 'ALLIANCE_SELECTION' 
-  | 'ROBOT_SELECTION';
+export enum MessageType {
+  MATCH_DATA_UPDATE = 'MATCH_DATA_UPDATE',
+  VIEW_MODE_CHANGE = 'VIEW_MODE_CHANGE',
+  ALLIANCE_SELECTION = 'ALLIANCE_SELECTION',
+  ROBOT_SELECTION = 'ROBOT_SELECTION'
+}
 
 // Map message types to their corresponding payload types
 export type MessagePayloadMap = {
-  'MATCH_DATA_UPDATE': MatchDataPayload;
-  'VIEW_MODE_CHANGE': ViewModePayload;
-  'ALLIANCE_SELECTION': AllianceSelectionPayload;
-  'ROBOT_SELECTION': RobotSelectionPayload;
+  [MessageType.MATCH_DATA_UPDATE]: MatchDataPayload;
+  [MessageType.VIEW_MODE_CHANGE]: ViewModePayload;
+  [MessageType.ALLIANCE_SELECTION]: AllianceSelectionPayload;
+  [MessageType.ROBOT_SELECTION]: RobotSelectionPayload;
 };
 
 // Define the structure of our messages
@@ -43,23 +45,43 @@ export interface RobotSelectionPayload {
 
 // Singleton class for managing match messaging
 class MatchMessagingService {
-  private channel: BroadcastChannel;
+  private socket: Socket;
   private listeners: Map<MessageType, ((payload: any) => void)[]>;
   
   constructor() {
-    this.channel = new BroadcastChannel('match-messaging');
+    // Connect to the Socket.IO server using relative URL (will connect to same host as the page)
+    // This works across different devices as long as they access the app from the server's IP/hostname
+    this.socket = io();
     this.listeners = new Map();
     
-    this.channel.onmessage = (event) => {
-      const message = event.data as MatchMessage;
-      this.notifyListeners(message.type, message.payload);
-    };
+    // Set up listeners for each message type
+    Object.values(MessageType).forEach((type: MessageType) => {
+      this.socket.on(type, (payload: any) => {
+        this.notifyListeners(type, payload);
+      });
+    });
+    
+    // Log connection status
+    this.socket.on('connect', () => {
+      console.log('Connected to Socket.IO server with ID:', this.socket.id);
+    });
+    
+    this.socket.on('disconnect', () => {
+      console.log('Disconnected from Socket.IO server');
+    });
+    
+    this.socket.on('connect_error', (error) => {
+      console.error('Socket.IO connection error:', error);
+    });
   }
   
-  // Send a message to all other tabs/windows
+  // Send a message to all other connected clients
   public sendMessage<T extends MessageType>(type: T, payload: MessagePayloadMap[T]): void {
-    const message: MatchMessage<T> = { type, payload };
-    this.channel.postMessage(message);
+    // Emit the message to the Socket.IO server
+    this.socket.emit(type, payload);
+    
+    // Also notify local listeners (for the current client)
+    this.notifyListeners(type, payload);
   }
   
   // Subscribe to a specific message type
@@ -92,24 +114,26 @@ class MatchMessagingService {
   
   // Helper methods for common messages
   public updateMatchData(matchData: MatchDataPayload): void {
-    this.sendMessage('MATCH_DATA_UPDATE', matchData);
+    this.sendMessage(MessageType.MATCH_DATA_UPDATE, matchData);
   }
   
   public changeViewMode(mode: ViewMode): void {
-    this.sendMessage('VIEW_MODE_CHANGE', { mode });
+    this.sendMessage(MessageType.VIEW_MODE_CHANGE, { mode });
   }
   
   public selectAlliance(alliance: AllianceType): void {
-    this.sendMessage('ALLIANCE_SELECTION', { alliance });
+    this.sendMessage(MessageType.ALLIANCE_SELECTION, { alliance });
   }
   
   public selectRobot(alliance: AllianceType, teamIndex: number): void {
-    this.sendMessage('ROBOT_SELECTION', { alliance, teamIndex });
+    this.sendMessage(MessageType.ROBOT_SELECTION, { alliance, teamIndex });
   }
   
   // Clean up resources
   public dispose(): void {
-    this.channel.close();
+    if (this.socket) {
+      this.socket.disconnect();
+    }
     this.listeners.clear();
   }
 }
