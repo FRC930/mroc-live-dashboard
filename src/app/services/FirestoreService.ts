@@ -1,19 +1,17 @@
 import { 
   collection, 
   doc, 
-  getDocs, 
-  getDoc, 
   setDoc, 
   updateDoc, 
   deleteDoc, 
-  query, 
-  where,
-  orderBy,
-  limit,
-  DocumentData
+  DocumentData,
+  onSnapshot,
+  QuerySnapshot,
+  DocumentSnapshot,
+  Unsubscribe
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { TeamData, createEmptyTeam } from '../models/TeamData';
+import { TeamData } from '../models/TeamData';
 
 // Collection reference
 const TEAMS_COLLECTION = 'team_info';
@@ -23,12 +21,15 @@ const TEAMS_COLLECTION = 'team_info';
  */
 export class FirestoreService {
   /**
-   * Get all teams from Firestore
+   * Subscribe to real-time updates for all teams
+   * @param callback Function to call when data changes
+   * @returns Unsubscribe function
    */
-  static async getAllTeams(): Promise<TeamData[]> {
-    try {
-      const teamsSnapshot = await getDocs(collection(db, TEAMS_COLLECTION));
-      return teamsSnapshot.docs.map(doc => {
+  static subscribeToAllTeams(callback: (teams: TeamData[]) => void): Unsubscribe {
+    const teamsRef = collection(db, TEAMS_COLLECTION);
+    
+    return onSnapshot(teamsRef, (snapshot: QuerySnapshot) => {
+      const teams = snapshot.docs.map(doc => {
         const data = doc.data();
         return {
           number: doc.id,
@@ -40,39 +41,43 @@ export class FirestoreService {
           robot_name: data.robot_name
         };
       });
-    } catch (error) {
-      console.error('Error getting teams:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get a team by its number
-   */
-  static async getTeamByNumber(teamNumber: string): Promise<TeamData | null> {
-    try {
-      const teamRef = doc(db, TEAMS_COLLECTION, teamNumber);
-      const teamSnapshot = await getDoc(teamRef);
       
-      if (!teamSnapshot.exists()) {
-        return null;
+      callback(teams);
+    }, (error) => {
+      console.error('Error subscribing to teams:', error);
+    });
+  }
+  
+  /**
+   * Subscribe to real-time updates for a specific team
+   * @param teamNumber Team number to subscribe to
+   * @param callback Function to call when data changes
+   * @returns Unsubscribe function
+   */
+  static subscribeToTeam(teamNumber: string, callback: (team: TeamData | null) => void): Unsubscribe {
+    const teamRef = doc(db, TEAMS_COLLECTION, teamNumber);
+    
+    return onSnapshot(teamRef, (snapshot: DocumentSnapshot) => {
+      if (!snapshot.exists()) {
+        callback(null);
+        return;
       }
       
-      const data = teamSnapshot.data();
-      return {
+      const data = snapshot.data();
+      callback({
         number: teamNumber,
-        EPA: data.EPA,
-        notes: data.notes,
-        location: data.location,
-        name: data.name,
-        rank: data.rank,
-        robot_name: data.robot_name
-      };
-    } catch (error) {
-      console.error(`Error getting team ${teamNumber}:`, error);
-      throw error;
-    }
+        EPA: data?.EPA,
+        notes: data?.notes,
+        location: data?.location,
+        name: data?.name,
+        rank: data?.rank,
+        robot_name: data?.robot_name
+      });
+    }, (error) => {
+      console.error(`Error subscribing to team ${teamNumber}:`, error);
+    });
   }
+  // The getAllTeams and getTeamByNumber methods have been replaced by the subscription methods above
 
   /**
    * Add or update a team in Firestore

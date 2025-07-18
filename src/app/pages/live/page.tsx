@@ -3,13 +3,11 @@
 import { useEffect, useState, createContext, useContext } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { TeamData, AllianceType, ViewMode } from '../../models/TeamData';
-import { getMatchMessagingService } from '../../services/MatchMessaging';
+import { getMatchMessagingService, MessageType } from '../../services/MatchMessaging';
 import { useFirestore } from '../../hooks/useFirestore';
 import AllTeamsView from './components/AllTeamsView';
 import AllianceView from './components/AllianceView';
 import RobotView from './components/RobotView';
-
-
 
 export default function LivePage() {
   const [matchNumber, setMatchNumber] = useState('');
@@ -21,13 +19,7 @@ export default function LivePage() {
   const [selectedTeamIndex, setSelectedTeamIndex] = useState<number>(0);
   
   // Use the Firestore hook to fetch team data
-  const { teams, loading, error, fetchAllTeams } = useFirestore();
-
-  // Fetch all teams from Firestore on component mount
-  useEffect(() => {
-    console.log('Fetching teams...');
-    fetchAllTeams();
-  }, [fetchAllTeams]);
+  const { teams, loading, error } = useFirestore();
   
   const getSelectedTeam = (): TeamData | undefined => {
     if (selectedAlliance === 'blue') {
@@ -52,7 +44,7 @@ export default function LivePage() {
     const messagingService = getMatchMessagingService();
     
     // Subscribe to match data updates
-    const matchDataUnsubscribe = messagingService.subscribe('MATCH_DATA_UPDATE', (payload) => {
+    const matchDataUnsubscribe = messagingService.subscribe(MessageType.MATCH_DATA_UPDATE, (payload) => {
       setMatchNumber(payload.matchNumber);
       
       // Enhance teams with Firestore data if available
@@ -64,18 +56,18 @@ export default function LivePage() {
     });
     
     // Subscribe to view mode changes
-    const viewModeUnsubscribe = messagingService.subscribe('VIEW_MODE_CHANGE', (payload) => {
+    const viewModeUnsubscribe = messagingService.subscribe(MessageType.VIEW_MODE_CHANGE, (payload) => {
       setViewMode(payload.mode);
     });
     
     // Subscribe to alliance selection
-    const allianceUnsubscribe = messagingService.subscribe('ALLIANCE_SELECTION', (payload) => {
+    const allianceUnsubscribe = messagingService.subscribe(MessageType.ALLIANCE_SELECTION, (payload) => {
       setSelectedAlliance(payload.alliance);
       setViewMode('alliance');
     });
     
     // Subscribe to robot selection
-    const robotUnsubscribe = messagingService.subscribe('ROBOT_SELECTION', (payload) => {
+    const robotUnsubscribe = messagingService.subscribe(MessageType.ROBOT_SELECTION, (payload) => {
       setSelectedAlliance(payload.alliance);
       setSelectedTeamIndex(payload.teamIndex);
       setViewMode('robot');
@@ -89,6 +81,14 @@ export default function LivePage() {
       robotUnsubscribe();
     };
   }, [teams]); // Add teams as a dependency to re-run when Firestore data changes
+
+  useEffect(() => {
+    const enhancedBlueTeams = enhanceTeamsWithFirestoreData(blueTeams);
+    const enhancedRedTeams = enhanceTeamsWithFirestoreData(redTeams);
+    
+    setBlueTeams(enhancedBlueTeams);
+    setRedTeams(enhancedRedTeams);
+  }, [teams]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white overflow-hidden">

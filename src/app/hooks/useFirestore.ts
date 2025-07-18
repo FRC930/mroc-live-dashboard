@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { FirestoreService } from '../services/FirestoreService';
 import { TeamData } from '../models/TeamData';
+import { Unsubscribe } from 'firebase/firestore';
 
 /**
  * Custom hook for fetching and managing team data from Firestore
@@ -9,41 +10,64 @@ export const useFirestore = () => {
   const [teams, setTeams] = useState<TeamData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
+  const [currentTeam, setCurrentTeam] = useState<TeamData | null>(null);
+  
+  // Refs to hold unsubscribe functions
+  const teamsUnsubscribeRef = useRef<Unsubscribe | null>(null);
+  const teamUnsubscribeRef = useRef<Unsubscribe | null>(null);
 
   /**
-   * Fetch all teams from Firestore
+   * Subscribe to all teams from Firestore
    */
-  const fetchAllTeams = useCallback(async () => {
-    try {
-      setLoading(true);
-      const teamsData = await FirestoreService.getAllTeams();
+  const subscribeToAllTeams = useCallback(() => {
+    setLoading(true);
+    
+    // Clean up any existing subscription
+    if (teamsUnsubscribeRef.current) {
+      teamsUnsubscribeRef.current();
+    }
+    
+    // Set up new subscription
+    teamsUnsubscribeRef.current = FirestoreService.subscribeToAllTeams((teamsData) => {
       setTeams(teamsData);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Failed to fetch teams'));
-      console.error('Error fetching teams:', err);
-    } finally {
       setLoading(false);
-    }
+      setError(null);
+    });
   }, []);
-
+  
   /**
-   * Fetch a single team by number
+   * Subscribe to a single team by number
    */
-  const fetchTeam = useCallback(async (teamNumber: string): Promise<TeamData | null> => {
-    try {
-      setLoading(true);
-      const team = await FirestoreService.getTeamByNumber(teamNumber);
-      setError(null);
-      return team;
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error(`Failed to fetch team ${teamNumber}`));
-      console.error(`Error fetching team ${teamNumber}:`, err);
-      return null;
-    } finally {
-      setLoading(false);
+  const subscribeToTeam = useCallback((teamNumber: string) => {
+    setLoading(true);
+    
+    // Clean up any existing subscription
+    if (teamUnsubscribeRef.current) {
+      teamUnsubscribeRef.current();
     }
+    
+    // Set up new subscription
+    teamUnsubscribeRef.current = FirestoreService.subscribeToTeam(teamNumber, (team) => {
+      setCurrentTeam(team);
+      setLoading(false);
+      setError(null);
+    });
   }, []);
+  
+  // Set up initial subscription when the hook mounts
+  useEffect(() => {
+    subscribeToAllTeams();
+    
+    // Clean up subscriptions when component unmounts
+    return () => {
+      if (teamsUnsubscribeRef.current) {
+        teamsUnsubscribeRef.current();
+      }
+      if (teamUnsubscribeRef.current) {
+        teamUnsubscribeRef.current();
+      }
+    };
+  }, [subscribeToAllTeams]);
 
   /**
    * Add or update a team
@@ -52,8 +76,7 @@ export const useFirestore = () => {
     try {
       setLoading(true);
       await FirestoreService.setTeam(team);
-      // Refresh the teams list
-      await fetchAllTeams();
+      // No need to refresh teams - the subscription will handle that
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to save team'));
@@ -61,7 +84,7 @@ export const useFirestore = () => {
     } finally {
       setLoading(false);
     }
-  }, [fetchAllTeams]);
+  }, []);
 
   /**
    * Update a team
@@ -70,8 +93,7 @@ export const useFirestore = () => {
     try {
       setLoading(true);
       await FirestoreService.updateTeam(teamNumber, teamData);
-      // Refresh the teams list
-      await fetchAllTeams();
+      // No need to refresh teams - the subscription will handle that
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err : new Error(`Failed to update team ${teamNumber}`));
@@ -79,7 +101,7 @@ export const useFirestore = () => {
     } finally {
       setLoading(false);
     }
-  }, [fetchAllTeams]);
+  }, []);
 
   /**
    * Delete a team
@@ -88,8 +110,7 @@ export const useFirestore = () => {
     try {
       setLoading(true);
       await FirestoreService.deleteTeam(teamNumber);
-      // Refresh the teams list
-      await fetchAllTeams();
+      // No need to refresh teams - the subscription will handle that
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err : new Error(`Failed to delete team ${teamNumber}`));
@@ -97,14 +118,15 @@ export const useFirestore = () => {
     } finally {
       setLoading(false);
     }
-  }, [fetchAllTeams]);
+  }, []);
 
   return {
     teams,
+    currentTeam,
     loading,
     error,
-    fetchAllTeams,
-    fetchTeam,
+    subscribeToAllTeams,
+    subscribeToTeam,
     saveTeam,
     updateTeam,
     deleteTeam
