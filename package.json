@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "firebase": "^11.10.0",
+    "firebase-functions": "^6.1.0",
     "framer-motion": "^12.19.1",
     "next": "15.3.4",
     "react": "^19.0.0",
