@@ -6,7 +6,8 @@ export enum MessageType {
   MATCH_DATA_UPDATE = 'MATCH_DATA_UPDATE',
   VIEW_MODE_CHANGE = 'VIEW_MODE_CHANGE',
   ALLIANCE_SELECTION = 'ALLIANCE_SELECTION',
-  ROBOT_SELECTION = 'ROBOT_SELECTION'
+  ROBOT_SELECTION = 'ROBOT_SELECTION',
+  RANKINGS_PAGE_CHANGE = 'RANKINGS_PAGE_CHANGE'
 }
 
 // Map message types to their corresponding payload types
@@ -15,6 +16,7 @@ export type MessagePayloadMap = {
   [MessageType.VIEW_MODE_CHANGE]: ViewModePayload;
   [MessageType.ALLIANCE_SELECTION]: AllianceSelectionPayload;
   [MessageType.ROBOT_SELECTION]: RobotSelectionPayload;
+  [MessageType.RANKINGS_PAGE_CHANGE]: RankingsPagePayload;
 };
 
 // Define the structure of our messages
@@ -28,6 +30,7 @@ export interface MatchDataPayload {
   matchNumber: string;
   blueTeams: TeamData[];
   redTeams: TeamData[];
+  eventKey: string; // Add event key to match data
 }
 
 export interface ViewModePayload {
@@ -41,6 +44,10 @@ export interface AllianceSelectionPayload {
 export interface RobotSelectionPayload {
   alliance: AllianceType;
   teamIndex: number;
+}
+
+export interface RankingsPagePayload {
+  page: number;
 }
 
 // Singleton class for managing match messaging
@@ -127,6 +134,10 @@ class MatchMessagingService {
   
   public selectRobot(alliance: AllianceType, teamIndex: number): void {
     this.sendMessage(MessageType.ROBOT_SELECTION, { alliance, teamIndex });
+  }
+  
+  public changeRankingsPage(page: number): void {
+    this.sendMessage(MessageType.RANKINGS_PAGE_CHANGE, { page });
   }
   
   // Clean up resources

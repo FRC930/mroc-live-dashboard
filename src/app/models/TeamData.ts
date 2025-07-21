@@ -11,6 +11,24 @@ export interface TeamData {
   rank?: number;
   robot_name?: string;
   imageUrl?: string; // Additional field for UI purposes
+  // New ranking data fields from TBA webhooks
+  ranking_data?: {
+    matches_played: number;
+    record: {
+      wins: number;
+      losses: number;
+      ties: number;
+    };
+    ranking_score: number;
+    // Raw arrays from TBA
+    extra_stats?: number[];
+    sort_orders?: number[];
+    // Named stats mapped from the arrays
+    named_extra_stats?: { [key: string]: number };
+    named_sort_orders?: { [key: string]: number };
+    event_key: string;
+    last_updated: Date;
+  };
 }
 
 /**
@@ -36,4 +54,4 @@ export type AllianceType = 'blue' | 'red';
 /**
  * View modes for team display
  */
-export type ViewMode = 'all' | 'alliance' | 'robot';
+export type ViewMode = 'all' | 'alliance' | 'robot' | 'rankings';

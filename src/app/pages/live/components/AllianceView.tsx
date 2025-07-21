@@ -12,6 +12,9 @@ interface AllianceViewProps {
 
 export default function AllianceView({ teams, alliance }: AllianceViewProps) {
   const allianceColor = alliance === 'blue' ? 'blue' : 'red';
+  const textColor = alliance === 'blue' ? 'text-blue-200' : 'text-red-200';
+  const bgColor = alliance === 'blue' ? 'bg-blue-800' : 'bg-red-800';
+  const borderColor = alliance === 'blue' ? 'border-blue-600' : 'border-red-600';
 
   return (
     <motion.div
@@ -22,8 +25,11 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className={`bg-gradient-to-r from-${allianceColor}-900  to-purple-900 p-6 rounded-lg shadow-lg mb-6 border-2 border-${allianceColor}-700 `}>
-        <h2 className="text-4xl font-bold text-center mb-2">{alliance === 'blue' ? 'BLUE ALLIANCE' : 'RED ALLIANCE'}</h2>
+      <div className={`${bgColor} p-6 rounded-lg shadow-xl mb-6 border-2 ${borderColor}`} 
+           style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}>
+        <h2 className={`text-4xl font-bold text-center mb-2 ${textColor}`}>
+          {alliance === 'blue' ? 'BLUE ALLIANCE' : 'RED ALLIANCE'}
+        </h2>
       </div>
 
       <div className="space-y-4">
@@ -32,7 +38,8 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
           
           <motion.div
             key={`team-${index}`}
-            className={`flex items-center p-4 mb-4 rounded-lg shadow-md border ${allianceColor === 'blue' ? 'bg-blue-900 bg-opacity-50 border-blue-700' : 'bg-red-900 bg-opacity-50 border-red-700'}`}
+            className={`flex items-center p-4 mb-4 rounded-lg shadow-xl border-2 ${allianceColor === 'blue' ? 'bg-blue-900 border-blue-700' : 'bg-red-900 border-red-700'}`}
+            style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: index * 0.1 }}
@@ -58,7 +65,7 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
                       const parent = target.parentElement;
                       if (parent) {
                         const fallback = document.createElement('div');
-                        fallback.className = 'text-7xl';
+                        fallback.className = `text-7xl ${textColor}`;
                         fallback.textContent = '🤖';
                         parent.appendChild(fallback);
                         
@@ -67,27 +74,27 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
                   />
                 </div>
               ) : (
-                <div className="text-7xl">🤖</div>
+                <div className={`text-7xl ${textColor}`}>🤖</div>
               )}
             </div>
             <div className="w-2/3 pl-6">
-              <h3 className="text-3xl font-bold mb-2">Team {team.number || '?'} | {team.name || 'Name not found'}</h3>
+              <h3 className={`text-3xl font-bold mb-2 ${textColor}`}>Team {team.number || '?'} | {team.name || 'Name not found'}</h3>
 
               <div className="grid grid-cols-2 gap-2">
-                <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
+                <div className="bg-gray-800 p-2 rounded border border-gray-700">
                   <div className="text-sm opacity-70">Record</div>
                   <div className="text-xl font-bold">{(team as any).record || '0-0-0'}</div>
                 </div>
-                <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
+                <div className="bg-gray-800 p-2 rounded border border-gray-700">
                   <div className="text-sm opacity-70">Location</div>
                   <div className="text-xl font-bold">{(team as any).location || 'No location found'}</div>
                 </div>
                 
-                <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
+                <div className="bg-gray-800 p-2 rounded border border-gray-700">
                   <div className="text-sm opacity-70">Ranking</div>
                   <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
                 </div>
-                <div className="bg-gray-800 bg-opacity-50 p-2 rounded">
+                <div className="bg-gray-800 p-2 rounded border border-gray-700">
                   <div className="text-sm opacity-70">Robot Name</div>
                   <div className="text-xl font-bold">{(team as any).robot_name || 'No robot name found'}</div>
                 </div>

@@ -8,15 +8,18 @@ import { useFirestore } from '../../hooks/useFirestore';
 import AllTeamsView from './components/AllTeamsView';
 import AllianceView from './components/AllianceView';
 import RobotView from './components/RobotView';
+import RankingsTable from './components/RankingsTable';
 
 export default function LivePage() {
   const [matchNumber, setMatchNumber] = useState('');
   const [blueTeams, setBlueTeams] = useState<TeamData[]>([]);
   const [redTeams, setRedTeams] = useState<TeamData[]>([]);
+  const [eventKey, setEventKey] = useState<string>(''); 
   
   const [viewMode, setViewMode] = useState<ViewMode>('all');
   const [selectedAlliance, setSelectedAlliance] = useState<AllianceType>('blue');
   const [selectedTeamIndex, setSelectedTeamIndex] = useState<number>(0);
+  const [rankingsPage, setRankingsPage] = useState<number>(0);
   
   // Use the Firestore hook to fetch team data
   const { teams, loading, error } = useFirestore();
@@ -46,6 +49,7 @@ export default function LivePage() {
     // Subscribe to match data updates
     const matchDataUnsubscribe = messagingService.subscribe(MessageType.MATCH_DATA_UPDATE, (payload) => {
       setMatchNumber(payload.matchNumber);
+      setEventKey(payload.eventKey); 
       
       // Enhance teams with Firestore data if available
       const enhancedBlueTeams = enhanceTeamsWithFirestoreData(payload.blueTeams);
@@ -73,14 +77,20 @@ export default function LivePage() {
       setViewMode('robot');
     });
     
+    // Subscribe to rankings page changes
+    const rankingsPageUnsubscribe = messagingService.subscribe(MessageType.RANKINGS_PAGE_CHANGE, (payload) => {
+      setRankingsPage(payload.page);
+    });
+    
     // Clean up subscriptions
     return () => {
       matchDataUnsubscribe();
       viewModeUnsubscribe();
       allianceUnsubscribe();
       robotUnsubscribe();
+      rankingsPageUnsubscribe();
     };
-  }, [teams]); // Add teams as a dependency to re-run when Firestore data changes
+  }, [teams]); 
 
   useEffect(() => {
     const enhancedBlueTeams = enhanceTeamsWithFirestoreData(blueTeams);
@@ -89,6 +99,9 @@ export default function LivePage() {
     setBlueTeams(enhancedBlueTeams);
     setRedTeams(enhancedRedTeams);
   }, [teams]);
+
+  // Combine all teams for rankings view
+  const allTeams = [...teams];
 
   return (
     <div className="min-h-screen bg-gray-900 text-white overflow-hidden">
@@ -102,7 +115,7 @@ export default function LivePage() {
           Error loading team data
         </div>
       )}
-      <div className="h-screen w-screen relative bg-gradient-to-r from-blue-900 via-purple-900 to-red-900 py-4">
+      <div className="h-screen w-screen relative" style={{ backgroundColor: "#00ff00" }}>
         <AnimatePresence mode="wait">
           {viewMode === 'all' && (
             <AllTeamsView 
@@ -123,6 +136,20 @@ export default function LivePage() {
               team={getSelectedTeam()!}
               alliance={selectedAlliance}
             />
+          )}
+          
+          {viewMode === 'rankings' && (
+            <div className="flex items-center justify-center h-full w-full">
+              <div className="w-full max-w-7xl">
+                <RankingsTable 
+                  teams={allTeams}
+                  itemsPerPage={12}
+                  autoChangePage={true}
+                  pageChangeInterval={10000}
+                  eventKey={eventKey} 
+                />
+              </div>
+            </div>
           )}
         </AnimatePresence>
       </div>

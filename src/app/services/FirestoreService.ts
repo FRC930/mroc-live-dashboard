@@ -8,13 +8,21 @@ import {
   onSnapshot,
   QuerySnapshot,
   DocumentSnapshot,
-  Unsubscribe
+  Unsubscribe,
+  query,
+  where,
+  orderBy
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { TeamData } from '../models/TeamData';
+import { EventSchedule, SimplifiedMatch } from '../models/EventSchedule';
+import { MatchScore } from '../models/MatchScore';
 
-// Collection reference
+// Collection references
 const TEAMS_COLLECTION = 'team_info';
+const TBA_WEBHOOKS_COLLECTION = 'tba_webhooks';
+const EVENT_SCHEDULES_COLLECTION = 'event_schedules';
+const MATCH_SCORES_COLLECTION = 'match_scores';
 
 /**
  * Firestore service for handling team data operations
@@ -38,7 +46,8 @@ export class FirestoreService {
           location: data.location,
           name: data.name,
           rank: data.rank,
-          robot_name: data.robot_name
+          robot_name: data.robot_name,
+          ranking_data: data.ranking_data
         };
       });
       
@@ -71,7 +80,8 @@ export class FirestoreService {
         location: data?.location,
         name: data?.name,
         rank: data?.rank,
-        robot_name: data?.robot_name
+        robot_name: data?.robot_name,
+        ranking_data: data?.ranking_data
       });
     }, (error) => {
       console.error(`Error subscribing to team ${teamNumber}:`, error);
@@ -126,5 +136,85 @@ export class FirestoreService {
       console.error(`Error deleting team ${teamNumber}:`, error);
       throw error;
     }
+  }
+
+  /**
+   * Subscribe to real-time updates for an event schedule
+   * @param eventKey The event key to subscribe to
+   * @param callback Function to call when data changes
+   * @returns Unsubscribe function
+   */
+  static subscribeToEventSchedule(eventKey: string, callback: (schedule: EventSchedule | null) => void): Unsubscribe {
+    const eventRef = doc(db, EVENT_SCHEDULES_COLLECTION, eventKey);
+    
+    return onSnapshot(eventRef, (snapshot: DocumentSnapshot) => {
+      if (!snapshot.exists()) {
+        callback(null);
+        return;
+      }
+      
+      const data = snapshot.data();
+      callback({
+        event_key: eventKey,
+        matches: data?.matches || [],
+        last_updated: data?.last_updated?.toDate() || new Date()
+      });
+    }, (error) => {
+      console.error(`Error subscribing to event schedule ${eventKey}:`, error);
+    });
+  }
+
+  /**
+   * Subscribe to real-time updates for a specific match score
+   * @param matchKey The match key to subscribe to
+   * @param callback Function to call when data changes
+   * @returns Unsubscribe function
+   */
+  static subscribeToMatchScore(matchKey: string, callback: (matchScore: MatchScore | null) => void): Unsubscribe {
+    const matchRef = doc(db, MATCH_SCORES_COLLECTION, matchKey);
+    
+    return onSnapshot(matchRef, (snapshot: DocumentSnapshot) => {
+      if (!snapshot.exists()) {
+        callback(null);
+        return;
+      }
+      
+      const data = snapshot.data();
+      callback({
+        match_key: matchKey,
+        score_data: data?.score_data,
+        last_updated: data?.last_updated?.toDate() || new Date()
+      });
+    }, (error) => {
+      console.error(`Error subscribing to match score ${matchKey}:`, error);
+    });
+  }
+
+  /**
+   * Subscribe to real-time updates for all match scores in an event
+   * @param eventKey The event key to subscribe to
+   * @param callback Function to call when data changes
+   * @returns Unsubscribe function
+   */
+  static subscribeToEventMatchScores(eventKey: string, callback: (matchScores: MatchScore[]) => void): Unsubscribe {
+    const matchesQuery = query(
+      collection(db, MATCH_SCORES_COLLECTION),
+      where("score_data.event_key", "==", eventKey)
+    );
+    
+    return onSnapshot(matchesQuery, (snapshot: QuerySnapshot) => {
+      const matchScores = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          match_key: doc.id,
+          score_data: data.score_data,
+          last_updated: data.last_updated?.toDate() || new Date()
+        };
+      });
+      
+      callback(matchScores);
+    }, (error) => {
+      console.error(`Error subscribing to event match scores ${eventKey}:`, error);
+    });
   }
 }
