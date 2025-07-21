@@ -62,14 +62,6 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;
                       target.style.display = 'none';
-                      const parent = target.parentElement;
-                      if (parent) {
-                        const fallback = document.createElement('div');
-                        fallback.className = `text-7xl ${textColor}`;
-                        fallback.textContent = '🤖';
-                        parent.appendChild(fallback);
-                        
-                      }
                     }}
                   />
                 </div>

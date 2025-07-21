@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
         pathname: "/**",
         search: "?alt=media",
       },
+      {
+        protocol: "https",
+        hostname: "www.thebluealliance.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

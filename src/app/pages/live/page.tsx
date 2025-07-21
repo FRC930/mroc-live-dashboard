@@ -118,7 +118,8 @@ export default function LivePage() {
       <div className="h-screen w-screen relative" style={{ backgroundColor: "#00ff00" }}>
         <AnimatePresence mode="wait">
           {viewMode === 'all' && (
-            <AllTeamsView 
+            <AllTeamsView
+              matchNumber={matchNumber}
               blueTeams={blueTeams}
               redTeams={redTeams}
             />
@@ -152,6 +153,14 @@ export default function LivePage() {
             </div>
           )}
         </AnimatePresence>
+        
+        {/* Watermarks */}
+        <div className="absolute bottom-2 left-4 text-white text-sm font-semibold opacity-80 z-50 bg-black bg-opacity-50 px-2 py-1 rounded">
+          Built by FRC Team 930
+        </div>
+        <div className="absolute bottom-2 right-4 text-white text-sm font-semibold opacity-80 z-50 bg-black bg-opacity-50 px-2 py-1 rounded">
+          Powered by The Blue Alliance
+        </div>
       </div>
     </div>
   );

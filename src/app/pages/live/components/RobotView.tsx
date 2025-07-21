@@ -113,13 +113,6 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                     const target = e.target as HTMLImageElement;
                     target.onerror = null;
                     target.style.display = 'none';
-                    const parent = target.parentElement;
-                    if (parent) {
-                      const fallback = document.createElement('div');
-                      fallback.className = `text-9xl ${textColor}`;
-                      fallback.textContent = '🤖';
-                      parent.appendChild(fallback);
-                    }
                   }}
                 />
               </div>
