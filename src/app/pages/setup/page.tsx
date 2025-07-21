@@ -226,7 +226,7 @@ export default function SetupPage() {
                 disabled={upcomingMatches.length === 0 || loadingSchedule}
                 className="w-full mt-4 bg-green-700 hover:bg-green-600 disabled:bg-gray-600 disabled:opacity-50 text-white py-3 rounded-md font-bold flex items-center justify-center gap-2"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/>
                 </svg>
                 NEXT MATCH
               </button>
