@@ -25,7 +25,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
 
   // Use the event data hook to get match schedule
   const { eventSchedule, loading, subscribeToEventSchedule } = useEventData();
-  
+
   // Subscribe to the event schedule if we have a team with ranking data
   useEffect(() => {
     subscribeToEventSchedule('2021wils1');
@@ -41,13 +41,13 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
       const redTeams = match.alliances.red.team_keys || [];
       const blueTeams = match.alliances.blue.team_keys || [];
       const isTeamInMatch = redTeams.includes(team.number) || blueTeams.includes(team.number);
-      
+
       // Check if match hasn't been played yet (score is -1 or not set)
       const redScore = match.alliances.red.score;
       const blueScore = match.alliances.blue.score;
-      const isUpcoming = (redScore === undefined || redScore === -1) && 
-                         (blueScore === undefined || blueScore === -1);
-      
+      const isUpcoming = (redScore === undefined || redScore === -1) &&
+        (blueScore === undefined || blueScore === -1);
+
       return isTeamInMatch && isUpcoming;
     });
 
@@ -59,24 +59,24 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
   const getMatchDetails = (match: SimplifiedMatch) => {
     const redTeams = match.alliances.red.team_keys || [];
     const blueTeams = match.alliances.blue.team_keys || [];
-    
+
     // Determine which alliance the team is on
     const teamAlliance = redTeams.includes(team.number) ? 'red' : 'blue';
-    
+
     // Get the teammates and opponents
-    const teammates = teamAlliance === 'red' 
+    const teammates = teamAlliance === 'red'
       ? redTeams.filter(t => t !== team.number)
       : blueTeams.filter(t => t !== team.number);
-    
+
     const opponents = teamAlliance === 'red' ? blueTeams : redTeams;
-    
+
     return {
       alliance: teamAlliance,
       teammates,
       opponents
     };
   };
-  
+
   return (
     <motion.div
       key="robot-view"
@@ -86,8 +86,8 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className={`${bgColor} rounded-lg shadow-xl p-6 border-2 ${borderColor}`} 
-           style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}>
+      <div className={`${bgColor} rounded-lg shadow-xl p-6 border-2 ${borderColor}`}
+        style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}>
         <h2 className={`text-4xl font-bold text-center mb-6 ${textColor}`}>Team {team.number || '?'} | {(team).name || '?'} </h2>
 
         <div className="flex flex-col md:flex-row gap-8">
@@ -150,25 +150,30 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                     <div className="text-sm opacity-70">Ranking</div>
                     <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
                   </div>
-                  
+
                   <div>
                     <div className="text-sm opacity-70">Robot Name</div>
                     <div className="text-xl font-bold">{team.robot_name || 'Robot name not found'}</div>
                   </div>
                 </div>
               </div>
-
+              <div className="bg-gray-800 p-4 rounded md:col-span-2 border border-gray-700">
+                <h3 className="text-xl font-bold mb-2">Notes</h3>
+                <div className="text-md">
+                  {(team as any).notes || 'No notes available for this team.'}
+                </div>
+              </div>  
               <div className="bg-gray-800 p-4 rounded md:col-span-2 border border-gray-700">
                 <h3 className="text-xl font-bold mb-2">Upcoming Matches</h3>
                 {loading ? (
                   <div className="text-center py-4">Loading match schedule...</div>
                 ) : upcomingMatches.length > 0 ? (
                   <div className="overflow-x-auto">
-                    <table className="w-full text-2xl">
+                    <table className="w-full text-1xl">
                       <thead>
                         <tr className="border-b border-gray-700">
                           <th className="text-left py-2">Match</th>
-                          <th className="text-left py-2">With</th>
+                          <th className="text-left py-2">Partners</th>
                           <th className="text-left py-2">Against</th>
                         </tr>
                       </thead>
@@ -191,12 +196,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                 )}
               </div>
 
-              <div className="bg-gray-800 p-4 rounded md:col-span-2 border border-gray-700">
-                <h3 className="text-xl font-bold mb-2">Notes</h3>
-                <div className="text-md">
-                  {(team as any).notes || 'No notes available for this team.'}
-                </div>
-              </div>
+
             </motion.div>
           </div>
         </div>
