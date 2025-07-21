@@ -1,17 +1,45 @@
 import { createServer } from "node:http";
 import next from "next";
 import { Server } from "socket.io";
-
+import { networkInterfaces } from 'os';
 const dev = process.env.NODE_ENV !== "production";
 // Use 0.0.0.0 to listen on all network interfaces (needed for cross-device access)
-const hostname = "0.0.0.0";
+const hostname = "localhost";
 const port = 9930;
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
+// Get the local IPV4 address ignoring internal addresses 
+function getLocalIP() {
+  const networks = networkInterfaces();
+  const IPResults = Object.create(null); 
+
+  for (const name of Object.keys(networks)) {
+    for (const net of networks[name]) {
+     
+      if (net.family === 'IPv4' && !net.internal) {
+        if (!IPResults[name]) {
+          IPResults[name] = [];
+        }
+        IPResults[name].push(net.address);
+      }
+    }
+  }
+    //Return the first IPv4 address found, if any
+    for (const interfaceName in IPResults) {
+        if (Object.hasOwnProperty.bind(interfaceName) && IPResults[interfaceName].length > 0) {
+            return IPResults[interfaceName][0];
+        }
+    }
+
+  return null; // or undefined, or an empty array, etc.
+}
+
 app.prepare().then(() => {
   const httpServer = createServer(handler);
+  const ipAddress = getLocalIP();
+
 
   const io = new Server(httpServer, {
     cors: {
@@ -57,5 +85,10 @@ app.prepare().then(() => {
     })
     .listen(port, () => {
       console.log(`> Ready on http://${hostname}:${port}`);
+      if (ipAddress) {
+        console.log(`> Access on another device at: http://${ipAddress}:${port}`);
+      } else {
+        console.log('Could not retrieve local IP address.');
+      }
     });
 });
