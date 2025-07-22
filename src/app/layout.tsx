@@ -12,9 +12,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "MROC Live Dashboard",
   description: "FIRST Robotics Competition match display dashboard",
-  icons:{
-    icon : './favicon.ico'
-  }
+  
 };
 
 export default function RootLayout({
