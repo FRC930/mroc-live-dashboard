@@ -2,10 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
-import { AllianceType } from '../../models/TeamData';
+import { AllianceType, TeamData } from '../../models/TeamData';
 import { getMatchMessagingService } from '../../services/MatchMessaging';
 import { useEventData } from '../../hooks/useEventData';
 import { SimplifiedMatch, getMatchName } from '../../models/EventSchedule';
+import { FirestoreService } from '../../services/FirestoreService';
 
 export default function SetupPage() {
   const router = useRouter();
@@ -15,9 +16,24 @@ export default function SetupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isPushSuccess, setIsPushSuccess] = useState(false);
   const [eventKey, setEventKey] = useState('2021wils1'); // Default event key - replace with your actual event key
+  const [selectedTeam, setSelectedTeam] = useState(''); // New state for selected team in dropdown
 
   // Use the event data hook to get match schedule
   const { eventSchedule, loading: loadingSchedule, subscribeToEventSchedule } = useEventData();
+  
+  // Use Firestore hook to get all teams
+  const [allTeams, setAllTeams] = useState<TeamData[]>([]);
+  const [loadingTeams, setLoadingTeams] = useState(true);
+
+  // Subscribe to all teams
+  useEffect(() => {
+    const unsubscribe = FirestoreService.subscribeToAllTeams((teams) => {
+      setAllTeams(teams);
+      setLoadingTeams(false);
+    });
+    
+    return () => unsubscribe();
+  }, []);
 
   // Subscribe to the event schedule
   useEffect(() => {
@@ -170,6 +186,46 @@ export default function SetupPage() {
     messagingService.changeViewMode('rankings');
   };
 
+  // Show robot view for a specific team
+  const showTeamRobotView = () => {
+    if (!selectedTeam) return;
+    
+    // Find if the team is in the current match
+    const isInBlueAlliance = blueTeams.includes(selectedTeam);
+    const isInRedAlliance = redTeams.includes(selectedTeam);
+    
+    const messagingService = getMatchMessagingService();
+    
+    if (isInBlueAlliance) {
+      // If team is in blue alliance, use its index
+      const teamIndex = blueTeams.indexOf(selectedTeam);
+      messagingService.selectRobot('blue', teamIndex);
+    } else if (isInRedAlliance) {
+      // If team is in red alliance, use its index
+      const teamIndex = redTeams.indexOf(selectedTeam);
+      messagingService.selectRobot('red', teamIndex);
+    } else {
+      // If team is not in current match, we need to add it temporarily
+      // We'll use blue alliance and index 0 as default
+      const tempBlueTeams = [...blueTeams];
+      tempBlueTeams[0] = selectedTeam;
+      
+      // Update match data with the temporary team
+      messagingService.updateMatchData({
+        matchNumber,
+        blueTeams: tempBlueTeams.map(number => ({ number })),
+        redTeams: redTeams.map(number => ({ number })),
+        eventKey
+      });
+      
+      // Then select the robot view for this team
+      messagingService.selectRobot('blue', 0);
+    }
+    
+    // Change view mode to robot
+    messagingService.changeViewMode('robot');
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto p-6 max-w-7xl">
@@ -182,6 +238,38 @@ export default function SetupPage() {
           {/* Upcoming Matches Panel */}
           <div className="md:col-span-2">
             <div className="bg-gray-800 p-6 mb-8 rounded-lg shadow-lg h-full">
+
+            {/* New row for team selection */}
+            <div className="mb-4 bg-gray-800 rounded-md py-4">
+                  <h4 className="text-lg font-bold mb-2">Team Selection</h4>
+                  <div className="grid grid-cols-12 gap-2">
+                    <select
+                      value={selectedTeam}
+                      onChange={(e) => setSelectedTeam(e.target.value)}
+                      className="col-span-9 bg-gray-700 text-white px-3 py-2 rounded-md"
+                      disabled={loadingTeams}
+                    >
+                      <option value="">Select a team</option>
+                      {allTeams
+                        .sort((a, b) => Number(a.number) - Number(b.number))
+                        .map((team) => (
+                          <option key={team.number} value={team.number}>
+                            {team.number} - {team.name || 'Unknown'}
+                          </option>
+                        ))}
+                    </select>
+                    <button
+                      onClick={showTeamRobotView}
+                      disabled={!selectedTeam}
+                      className={`col-span-3 bg-purple-800 hover:bg-purple-700 text-white px-4 py-2 rounded-md ${
+                        !selectedTeam ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    >
+                      Push
+                    </button>
+                  </div>
+                </div>
+            
               <h2 className="text-2xl font-bold mb-4 text-center">Upcoming Matches</h2>
               
               {loadingSchedule ? (
@@ -352,6 +440,7 @@ export default function SetupPage() {
 
                 <div className="mt-8 border-t border-gray-700 pt-6">
                   <h3 className="text-xl font-bold mb-4 text-center">Live View Controls</h3>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <button
                       onClick={showAllTeamsView}

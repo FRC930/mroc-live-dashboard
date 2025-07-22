@@ -17,7 +17,7 @@ export default function AllTeamsView({
 }: AllTeamsViewProps) {
   return (
     <motion.div 
-      key="all-teams-view"
+      key={`all-teams-view-${matchNumber}-${blueTeams.map(t => t.number).join('-')}-${redTeams.map(t => t.number).join('-')}`}
       className="flex flex-col justify-between items-center h-[calc(100vh-8rem)] relative z-10 w-full px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -76,8 +76,21 @@ export default function AllTeamsView({
           transition={{ duration: 0.5, delay: 0.5 }}
         >
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-red-600 rounded-full blur-md"></div>
-            <div className="text-6xl font-black text-white bg-black bg-opacity-70 px-6 py-3 rounded-full border-4 border-white relative z-10">VS</div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-red-600 rounded-full blur-xl"></div>
+            <motion.div 
+              className="text-6xl font-black text-white bg-black bg-opacity-70 px-6 py-3 rounded-full border-4 border-white relative z-10"
+              animate={{ 
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                duration: 1,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "loop"
+              }}
+            >
+              VS
+            </motion.div>
           </div>
         </motion.div>
 
@@ -114,10 +127,12 @@ export default function AllTeamsView({
 // Team Card Component
 function TeamCard({ team, position, alliance }: { team: TeamData, position: number, alliance: 'red' | 'blue' }) {
   const isBlue = alliance === 'blue';
-  const bgColor = isBlue ? 'bg-blue-900' : 'bg-red-900';
+  const gradientBg = isBlue 
+    ? 'bg-gradient-to-t from-blue-500 to-blue-900' 
+    : 'bg-gradient-to-t from-red-500 to-red-900';
   const borderColor = isBlue ? 'border-blue-600' : 'border-red-600';
   const textColor = isBlue ? 'text-blue-200' : 'text-red-200';
-  const statsBg = isBlue ? 'bg-blue-800' : 'bg-red-800';
+  const statsBg = isBlue ? 'bg-blue-800/70' : 'bg-red-800/70';
   const statsBgHighlight = isBlue ? 'bg-blue-700' : 'bg-red-700';
   
   // Stagger animation based on position
@@ -125,15 +140,15 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
   
   return (
     <motion.div 
-      className={`flex flex-col items-center ${bgColor} rounded-lg shadow-xl border-2 ${borderColor} overflow-hidden`}
+      className={`flex flex-col items-center ${gradientBg} rounded-lg shadow-xl border-2 ${borderColor} overflow-hidden`}
       style={{ boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)' }}
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: animDelay }}
     >
       {/* Team Number Header */}
-      <div className="w-full p-1">
-        <div className={`${isBlue ? 'bg-blue-900' : 'bg-red-900'} bg-opacity-80 py-2 px-1`}>
+      <div className={`w-full p-1 ${statsBg}`}>
+        <div className='py-2 px-1'>
           <div className={`text-4xl font-black ${textColor} text-center`}>
             {team.number || '----'}
           </div>
@@ -147,7 +162,7 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
       
       {/* Key Stats */}
       {team.number && (
-        <div className="w-full px-2 py-2">
+        <div className={`w-full px-2 py-2 ${statsBg}`}>
           <div className="grid grid-cols-3 gap-1 text-center">
             <div className={`${statsBgHighlight} rounded p-1`}>
               <div className={`text-xs ${textColor} font-semibold`}>RANK</div>

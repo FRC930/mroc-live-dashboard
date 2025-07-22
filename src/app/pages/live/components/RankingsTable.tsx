@@ -114,11 +114,11 @@ const RankingsTable = ({
   if (sortedTeams.length === 0) {
     return (
       <motion.div
-        className="bg-gray-800 rounded-lg shadow-xl overflow-hidden p-8 text-center"
+        className="bg-black rounded-lg shadow-xl overflow-hidden p-8 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.91)' }}
       >
         <h2 className="text-2xl font-bold mb-4">Team Rankings</h2>
         <p className="text-gray-300">
@@ -132,12 +132,11 @@ const RankingsTable = ({
 
   return (
     <motion.div
-      className="bg-gray-800 rounded-lg shadow-xl overflow-hidden"
+      className="bg-black rounded-lg shadow-xl overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }} // Dark background for chromakey
-    >
+      style={{ backgroundColor: 'rgba(0, 0, 0, .95)' }}>
       <div className="p-6 bg-blue-900 border-b-2 border-blue-700">
         <h2 className="text-3xl font-bold text-center text-white">
           Team Rankings {eventKey && `- Event: ${eventKey}`}
@@ -178,7 +177,7 @@ const RankingsTable = ({
                 </div>
                 <div className="col-span-2 font-semibold">
                   <div>{team.number}</div>
-                  <div className="text-sm text-gray-400 truncate whitespace-nowrap overflow-hidden">{team.name || 'team name'}</div>
+                  <div className="text-sm text-gray-300 truncate whitespace-nowrap overflow-hidden">{team.name || 'team name'}</div>
                 </div>
                 <div className="col-span-2 text-center">
                   {formatRecord(team)}

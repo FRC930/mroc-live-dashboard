@@ -79,7 +79,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
 
   return (
     <motion.div
-      key="robot-view"
+      key={`robot-view-${alliance}-${team.number}`}
       className="h-[45vh] absolute top-0 z-2 w-full p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

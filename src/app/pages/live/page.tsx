@@ -21,10 +21,19 @@ export default function LivePage() {
   const [selectedTeamIndex, setSelectedTeamIndex] = useState<number>(0);
   const [rankingsPage, setRankingsPage] = useState<number>(0);
   
+  // New state for specific team selection
+  const [specificTeam, setSpecificTeam] = useState<TeamData | null>(null);
+  
   // Use the Firestore hook to fetch team data
   const { teams, loading, error } = useFirestore();
   
   const getSelectedTeam = (): TeamData | undefined => {
+    // If we have a specific team selected, return that
+    if (specificTeam) {
+      return specificTeam;
+    }
+    
+    // Otherwise use the alliance/index selection
     if (selectedAlliance === 'blue') {
       return blueTeams[selectedTeamIndex];
     } else {
@@ -67,6 +76,7 @@ export default function LivePage() {
     // Subscribe to alliance selection
     const allianceUnsubscribe = messagingService.subscribe(MessageType.ALLIANCE_SELECTION, (payload) => {
       setSelectedAlliance(payload.alliance);
+      setSpecificTeam(null); // Clear specific team when selecting an alliance
       setViewMode('alliance');
     });
     
@@ -74,7 +84,36 @@ export default function LivePage() {
     const robotUnsubscribe = messagingService.subscribe(MessageType.ROBOT_SELECTION, (payload) => {
       setSelectedAlliance(payload.alliance);
       setSelectedTeamIndex(payload.teamIndex);
+      setSpecificTeam(null); // Clear specific team when selecting a robot by alliance/index
       setViewMode('robot');
+    });
+    
+    // Subscribe to specific team selection
+    const specificTeamUnsubscribe = messagingService.subscribe(MessageType.SPECIFIC_TEAM_SELECTION, (payload) => {
+      const { teamNumber, alliance } = payload;
+      
+      // Find the team in all teams
+      const team = teams.find(t => t.number === teamNumber);
+      
+      if (team) {
+        setSpecificTeam(team);
+        setSelectedAlliance(alliance); // Set alliance for display purposes
+        setViewMode('robot');
+      } else {
+        // If team not found in Firestore data, create a basic team object
+        setSpecificTeam({
+          number: teamNumber,
+          // Set default values for required fields
+          EPA: 0,
+          notes: '',
+          location: '',
+          name: '',
+          rank: 0,
+          robot_name: ''
+        });
+        setSelectedAlliance(alliance);
+        setViewMode('robot');
+      }
     });
     
     // Subscribe to rankings page changes
@@ -88,6 +127,7 @@ export default function LivePage() {
       viewModeUnsubscribe();
       allianceUnsubscribe();
       robotUnsubscribe();
+      specificTeamUnsubscribe();
       rankingsPageUnsubscribe();
     };
   }, [teams]); 
@@ -155,10 +195,10 @@ export default function LivePage() {
         </AnimatePresence>
         
         {/* Watermarks */}
-        <div className="absolute bottom-2 left-4 text-white text-sm font-semibold opacity-80 z-50 bg-black bg-opacity-50 px-2 py-1 rounded">
+        <div className="absolute bottom-2 left-4 text-white text-sm font-semibold z-50 bg-black px-2 py-1 rounded">
           Built by FRC Team 930
         </div>
-        <div className="absolute bottom-2 right-4 text-white text-sm font-semibold opacity-80 z-50 bg-black bg-opacity-50 px-2 py-1 rounded">
+        <div className="absolute bottom-2 right-4 text-white text-sm font-semibold z-50 bg-black px-2 py-1 rounded">
           Powered by The Blue Alliance
         </div>
       </div>

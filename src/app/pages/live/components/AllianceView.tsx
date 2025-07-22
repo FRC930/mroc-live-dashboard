@@ -18,7 +18,7 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
 
   return (
     <motion.div
-      key="alliance-view"
+      key={`alliance-view-${alliance}-${teams.map(t => t.number).join('-')}`}
       className="h-[calc(100vh-8rem)] relative z-10 w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
