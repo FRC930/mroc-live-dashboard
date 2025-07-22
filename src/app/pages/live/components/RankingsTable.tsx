@@ -16,7 +16,7 @@ const RankingsTable = ({
   teams,
   itemsPerPage = 10,
   autoChangePage = true,
-  pageChangeInterval = 15000, // 15 seconds
+  pageChangeInterval = 2500, // 15 seconds
   eventKey,
 }: RankingsTableProps) => {
   const [currentPage, setCurrentPage] = useState(0);
