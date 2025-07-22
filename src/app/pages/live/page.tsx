@@ -155,11 +155,11 @@ export default function LivePage() {
         </AnimatePresence>
         
         {/* Watermarks */}
-        <div className="absolute bottom-2 left-4 text-white text-sm font-semibold opacity-80 z-50 bg-black bg-opacity-50 px-2 py-1 rounded">
-          Built by FRC Team 930
+        <div className="absolute bottom-2 left-4 text-white text-xs font-semibold opacity-80 z-50 bg-black bg-opacity-50 px-2 py-1 rounded">
+          <a href="https://www.team930.com/">Built by FRC Team 930</a>
         </div>
-        <div className="absolute bottom-2 right-4 text-white text-sm font-semibold opacity-80 z-50 bg-black bg-opacity-50 px-2 py-1 rounded">
-          Powered by The Blue Alliance
+        <div className="absolute bottom-2 right-4 text-white text-xs font-semibold opacity-80 z-50 bg-black bg-opacity-50 px-2 py-1 rounded">
+          <a href="https://www.thebluealliance.com/">Powered by The Blue Alliance</a>
         </div>
       </div>
     </div>
