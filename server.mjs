@@ -86,7 +86,7 @@ app.prepare().then(() => {
     .listen(port, () => {
       console.log(`> Ready on http://${hostname}:${port}`);
       if (ipAddress) {
-        console.log(`> Access on another device at: http://${ipAddress}:${port}/setup or http://${ipAddress}:${port}/live`);
+        console.log(`> Access on another device at: http://${ipAddress}:${port}/pages/setup or http://${ipAddress}:${port}/pages/live`);
       } else {
         console.log('Could not retrieve local IP address.');
       }
