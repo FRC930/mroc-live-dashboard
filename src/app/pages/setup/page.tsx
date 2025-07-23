@@ -446,7 +446,7 @@ export default function SetupPage() {
                       onClick={showAllTeamsView}
                       className="bg-purple-800 hover:bg-purple-700 text-white px-4 py-2 rounded-md "
                     >
-                      Show All Teams
+                      Show Matchup
                     </button>
                     <button
                       onClick={showBlueAllianceView}
