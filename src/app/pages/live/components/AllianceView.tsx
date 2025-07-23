@@ -19,14 +19,15 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
   return (
     <motion.div
       key={`alliance-view-${alliance}-${teams.map(t => t.number).join('-')}`}
-      className="h-[calc(100vh-8rem)] relative z-10 w-full"
+      className="h-[calc(100vh-8rem)] relative z-10 w-full px-[calc(25px)] top-[10px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className={`${bgColor} p-6 rounded-lg shadow-xl mb-6 border-2 ${borderColor}`} 
-           style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}>
+      <div className={`${bgColor} p-6  rounded-lg  mb-6 border-2 ${borderColor}`} 
+           style={{}}> 
+           {/*  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)'  */}
         <h2 className={`text-4xl font-bold text-center mb-2 ${textColor}`}>
           {alliance === 'blue' ? 'BLUE ALLIANCE' : 'RED ALLIANCE'}
         </h2>
@@ -38,8 +39,9 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
           
           <motion.div
             key={`team-${index}`}
-            className={`flex items-center p-4 mb-4 rounded-lg shadow-xl border-2 ${allianceColor === 'blue' ? 'bg-blue-900 border-blue-700' : 'bg-red-900 border-red-700'}`}
-            style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}
+            className={`flex items-center  p-4 mb-4 rounded-lg shadow-xl border-2 ${allianceColor === 'blue' ? 'bg-blue-900 border-blue-700' : 'bg-red-900 border-red-700'}`}
+            style={{ }}
+            // boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' 
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: index * 0.1 }}

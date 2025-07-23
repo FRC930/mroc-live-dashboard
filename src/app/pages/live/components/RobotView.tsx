@@ -87,7 +87,8 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
       transition={{ duration: 0.5 }}
     >
       <div className={`${bgColor} rounded-lg shadow-xl p-6 border-2 ${borderColor}`}
-        style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}>
+        style={{}}>
+          {/*  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)'  */}
         <h2 className={`text-4xl font-bold text-center mb-6 ${textColor}`}>Team {team.number || '?'} | {(team).name || '?'} </h2>
 
         <div className="flex flex-col md:flex-row gap-8">
@@ -129,7 +130,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
               transition={{ delay: 0.3 }}
             >
               <div className="bg-gray-800 p-4 rounded md:col-span-2 border border-gray-700">
-                <h3 className="text-xl font-bold mb-2">Team Stats</h3>
+                <h3 className="text-2xl font-bold mb-2">Team Stats</h3>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <div className="text-sm opacity-70">Record</div>
@@ -151,16 +152,16 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                 </div>
               </div>
               <div className="bg-gray-800 p-4 rounded md:col-span-2 border border-gray-700">
-                <h3 className="text-xl font-bold mb-2">Notes</h3>
-                <div className="text-md">
+                <h3 className="text-2xl font-bold mb-2">Notes</h3>
+                <div className="text-lg">
                   {(team as any).notes || 'No notes available for this team.'}
                 </div>
               </div>  
               <div className="bg-gray-800 p-4 rounded md:col-span-2 border border-gray-700">
-                <h3 className="text-xl font-bold mb-2">Upcoming Matches</h3>
+                <h3 className="text-2xl font-bold mb-2">Upcoming Matches</h3>
                 {loading ? (
                   <div className="text-center py-4">Loading match schedule...</div>
-                ) : upcomingMatches.length > 0 ? (
+                ) : upcomingMatches.length > 0 ?  (
                   <div className="overflow-x-auto">
                     <table className="w-full text-1xl">
                       <thead>
@@ -171,10 +172,10 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
                         </tr>
                       </thead>
                       <tbody>
-                        {upcomingMatches.map((match) => {
+                        {upcomingMatches.slice(0,5).map((match) => {
                           const details = getMatchDetails(match);
                           return (
-                            <tr key={match.key} className="border-b border-gray-700">
+                            <tr key={match.key} className="border-b border-gray-700 text-xl">
                               <td className="py-2">{getMatchName(match)}</td>
                               <td className="py-2">{details.teammates.join(', ')}</td>
                               <td className="py-2">{details.opponents.join(', ')}</td>

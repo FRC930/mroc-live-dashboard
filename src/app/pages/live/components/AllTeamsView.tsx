@@ -27,7 +27,7 @@ export default function AllTeamsView({
       {/* Match Header */}
       <div className="w-full flex justify-center mb-4 mt-4">
         <motion.div 
-          className="bg-gradient-to-r from-blue-600 via-purple-600 to-red-600 p-1 rounded-lg shadow-xl w-[80%]"
+          className="bg-white p-1 rounded-lg  w-[80%]"
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -49,7 +49,7 @@ export default function AllTeamsView({
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          <div className="bg-gradient-to-r from-blue-700 to-blue-500 p-1 mb-4 rounded-md shadow-lg">
+          <div className="bg-gradient-to-r from-blue-700 to-blue-500 p-1 mb-4 rounded-md ">
             <div className="bg-blue-900 bg-opacity-90 p-3">
               <h2 className="text-3xl font-bold text-center text-blue-200 tracking-wider flex items-center justify-center">
                 BLUE ALLIANCE
@@ -76,7 +76,7 @@ export default function AllTeamsView({
           transition={{ duration: 0.5, delay: 0.5 }}
         >
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-red-600 rounded-full blur-xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-red-600 rounded-full"></div>
             <motion.div 
               className="text-6xl font-black text-white bg-black bg-opacity-70 px-6 py-3 rounded-full border-4 border-white relative z-10"
               animate={{ 
@@ -101,7 +101,7 @@ export default function AllTeamsView({
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          <div className="bg-gradient-to-r from-red-500 to-red-700 p-1 mb-4 rounded-md shadow-lg">
+          <div className="bg-gradient-to-r from-red-500 to-red-700 p-1 mb-4 rounded-md">
             <div className="bg-red-900 bg-opacity-90 p-3">
               <h2 className="text-3xl font-bold text-center text-red-200 tracking-wider flex items-center justify-center">
                 RED ALLIANCE
@@ -140,8 +140,8 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
   
   return (
     <motion.div 
-      className={`flex flex-col items-center ${gradientBg} rounded-lg shadow-xl border-2 ${borderColor} overflow-hidden`}
-      style={{ boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)' }}
+      className={`flex flex-col items-center ${gradientBg} rounded-lg  border-2 ${borderColor} overflow-hidden`}
+      // style={{ boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)' }}
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: animDelay }}
@@ -163,7 +163,7 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
       {/* Key Stats */}
       {team.number && (
         <div className={`w-full px-2 py-2 ${statsBg}`}>
-          <div className="grid grid-cols-3 gap-1 text-center">
+          <div className="grid grid-cols-2 gap-1 text-center">
             <div className={`${statsBgHighlight} rounded p-1`}>
               <div className={`text-xs ${textColor} font-semibold`}>RANK</div>
               <div className="text-2xl font-bold text-white">
@@ -174,20 +174,6 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
                     transition={{ duration: 0.3, delay: animDelay + 0.2 }}
                   >
                     #{team.rank}
-                  </motion.div>
-                ) : '-'}
-              </div>
-            </div>
-            <div className={`${statsBgHighlight} rounded p-1`}>
-              <div className={`text-xs ${textColor} font-semibold`}>RECORD</div>
-              <div className="text-xl font-bold text-white mt-1">
-                {team.ranking_data ? (
-                  <motion.div
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.3, delay: animDelay + 0.3 }}
-                  >
-                    {team.ranking_data.record.wins}-{team.ranking_data.record.losses}-{team.ranking_data.record.ties}
                   </motion.div>
                 ) : '-'}
               </div>
@@ -206,7 +192,28 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
                 ) : '-'}
               </div>
             </div>
+            
+            
+            
+            
           </div>
+          <div className="grid grid-cols-1 gap-1 py-1 text-center">
+          <div className={`${statsBgHighlight} rounded p-1`}>
+              <div className={`text-xs ${textColor} font-semibold`}>RECORD</div>
+              <div className="text-2xl font-bold text-white ">
+                {team.ranking_data ? (
+                  <motion.div
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3, delay: animDelay + 0.3 }}
+                  >
+                    {team.ranking_data.record.wins}-{team.ranking_data.record.losses}-{team.ranking_data.record.ties}
+                  </motion.div>
+                ) : '-'}
+              </div>
+            </div>
+          </div>
+          
         </div>
       )}
       

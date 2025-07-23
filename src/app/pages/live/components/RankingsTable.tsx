@@ -16,7 +16,7 @@ const RankingsTable = ({
   teams,
   itemsPerPage = 10,
   autoChangePage = true,
-  pageChangeInterval = 2500, // 15 seconds
+  pageChangeInterval = 1500, // 15 seconds
   eventKey,
 }: RankingsTableProps) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -132,7 +132,7 @@ const RankingsTable = ({
 
   return (
     <motion.div
-      className="bg-black rounded-lg shadow-xl overflow-hidden"
+      className="bg-black rounded-lg  overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
