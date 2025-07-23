@@ -20,7 +20,7 @@ To view the page on another device, use the IP of the device hosting the page an
 # Live Dashboard Features
 
 ## Matchup view ("Show Matchup" on the setup page)
-* Shows the teams on both the Red and Blue Alliances, thier robot image, team icon and the following stats:
+* Shows the teams on both the Red and Blue Alliances, their robot image, team icon and the following stats:
     * Rank
     * Rank points
     * Record (Win-Loss-Tie)
@@ -38,7 +38,7 @@ To view the page on another device, use the IP of the device hosting the page an
     * Rank
     * Team Location
     * Robot name
-    * Notes (notable events that have occured in the season for this team)
+    * Notes (notable events that have occurred in the season for this team)
     * Upcoming Matches (the next 5 matches)
 
 ## Rankings (Show rankings on the setup page)
