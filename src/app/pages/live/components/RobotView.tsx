@@ -80,13 +80,13 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
   return (
     <motion.div
       key={`robot-view-${alliance}-${team.number}`}
-      className="h-[45vh] absolute top-0 z-2 w-full p-6"
+      className="h-[80vh] absolute top-0 z-2 w-full p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className={`${bgColor} rounded-lg shadow-xl p-6 border-2 ${borderColor}`}
+      <div className={`min-h-[80vh] ${bgColor} rounded-lg shadow-xl p-6 border-2 ${borderColor}`}
         style={{}}>
           {/*  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)'  */}
         <h2 className={`text-4xl font-bold text-center mb-6 ${textColor}`}>Team {team.number || '?'} | {(team).name || '?'} </h2>
@@ -99,7 +99,7 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
             transition={{ delay: 0.2 }}
           >
             {team.number ? (
-              <div className="relative w-96 h-96 overflow-visible">
+              <div className="relative w-96 h-96 mt-16 overflow-visible">
                 <Image
                   src={`https://firebasestorage.googleapis.com/v0/b/mroc-live-dashboard.firebasestorage.app/o/${team.number}.png?alt=media`}
                   alt={`Team ${team.number} robot`}

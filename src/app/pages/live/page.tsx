@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, createContext, useContext } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { TeamData, AllianceType, ViewMode } from '../../models/TeamData';
 import { getMatchMessagingService, MessageType } from '../../services/MatchMessaging';
 import { useFirestore } from '../../hooks/useFirestore';
@@ -155,53 +155,97 @@ export default function LivePage() {
           Error loading team data
         </div>
       )}
-      <div className="h-screen w-screen relative" style={{ backgroundColor: "#00ff00" }}>
+      <motion.div 
+        className="h-screen w-screen relative" 
+        style={{ backgroundColor: "#00ff00" }}
+      >
         <AnimatePresence mode="wait">
           {viewMode === 'all' && (
-            <AllTeamsView
-              matchNumber={matchNumber}
-              blueTeams={blueTeams}
-              redTeams={redTeams}
-            />
+            <motion.div
+              key="all-teams"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <AllTeamsView
+                matchNumber={matchNumber}
+                blueTeams={blueTeams}
+                redTeams={redTeams}
+              />
+            </motion.div>
           )}
 
           {viewMode === 'alliance' && (
-            <AllianceView
-              teams={selectedAlliance === 'blue' ? blueTeams : redTeams}
-              alliance={selectedAlliance}
-            />
+            <motion.div
+              key="alliance"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <AllianceView
+                teams={selectedAlliance === 'blue' ? blueTeams : redTeams}
+                alliance={selectedAlliance}
+              />
+            </motion.div>
           )}
 
           {viewMode === 'robot' && getSelectedTeam() && (
-            <RobotView
-              team={getSelectedTeam()!}
-              alliance={selectedAlliance}
-            />
+            <motion.div
+              key="robot"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <RobotView
+                team={getSelectedTeam()!}
+                alliance={selectedAlliance}
+              />
+            </motion.div>
           )}
           
           {viewMode === 'rankings' && (
-            <div className="flex items-center justify-center h-full w-full">
+            <motion.div
+              key="rankings"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center justify-center h-full w-full"
+            >
               <div className="w-full max-w-7xl">
                 <RankingsTable 
                   teams={allTeams}
-                  itemsPerPage={12}
+                  itemsPerPage={10}
                   autoChangePage={true}
                   pageChangeInterval={10000}
                   eventKey={eventKey} 
                 />
               </div>
-            </div>
+            </motion.div>
           )}
         </AnimatePresence>
         
-        {/* Watermarks */}
+        {/* Watermarks - only show when not in green screen mode */}
         <div className="absolute bottom-2 left-4 text-white text-sm font-semibold z-50 bg-black px-2 py-1 rounded">
           Built by FRC Team 930
         </div>
         <div className="absolute bottom-2 right-4 text-white text-sm font-semibold z-50 bg-black px-2 py-1 rounded">
           Powered by The Blue Alliance
         </div>
-      </div>
+        
+        {/* Logo at bottom center */}
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none">
+          <img 
+            src="/images/logo.png" 
+            alt="Team Logo" 
+            className="max-h-28 w-auto object-contain drop-shadow-[0_0_1px_rgba(0,0,0,1)] filter"
+            style={{ filter: 'drop-shadow(0 0 2px rgba(0,0,0,1))' }}
+          />
+        </div>
+      </motion.div>
     </div>
   );
 }

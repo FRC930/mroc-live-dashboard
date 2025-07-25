@@ -17,6 +17,7 @@ export default function SetupPage() {
   const [isPushSuccess, setIsPushSuccess] = useState(false);
   const [eventKey, setEventKey] = useState('2021wils1'); // Default event key - replace with your actual event key
   const [selectedTeam, setSelectedTeam] = useState(''); // New state for selected team in dropdown
+  const [greenScreenEnabled, setGreenScreenEnabled] = useState(false); // New state for green screen mode
 
   // Use the event data hook to get match schedule
   const { eventSchedule, loading: loadingSchedule, subscribeToEventSchedule } = useEventData();

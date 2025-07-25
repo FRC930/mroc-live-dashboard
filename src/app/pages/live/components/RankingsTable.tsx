@@ -177,7 +177,7 @@ const RankingsTable = ({
                 </div>
                 <div className="col-span-2 font-semibold">
                   <div>{team.number}</div>
-                  <div className="text-sm text-gray-300 truncate whitespace-nowrap overflow-hidden">{team.name || 'team name'}</div>
+                  <div className="max-w-[200px] min-w-[200px] text-sm text-gray-300 truncate whitespace-nowrap overflow-hidden">{team.name || 'team name'}</div>
                 </div>
                 <div className="col-span-2 text-center">
                   {formatRecord(team)}
