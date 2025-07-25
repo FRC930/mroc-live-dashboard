@@ -88,30 +88,17 @@ export default function LivePage() {
       setViewMode('robot');
     });
     
+    console.log('hey?')
     // Subscribe to specific team selection
     const specificTeamUnsubscribe = messagingService.subscribe(MessageType.SPECIFIC_TEAM_SELECTION, (payload) => {
       const { teamNumber, alliance } = payload;
-      
+      console.log(`Specific team selection received: ${teamNumber} (${alliance})`)
       // Find the team in all teams
       const team = teams.find(t => t.number === teamNumber);
       
       if (team) {
         setSpecificTeam(team);
         setSelectedAlliance(alliance); // Set alliance for display purposes
-        setViewMode('robot');
-      } else {
-        // If team not found in Firestore data, create a basic team object
-        setSpecificTeam({
-          number: teamNumber,
-          // Set default values for required fields
-          EPA: 0,
-          notes: '',
-          location: '',
-          name: '',
-          rank: 0,
-          robot_name: ''
-        });
-        setSelectedAlliance(alliance);
         setViewMode('robot');
       }
     });
@@ -224,6 +211,19 @@ export default function LivePage() {
                   eventKey={eventKey} 
                 />
               </div>
+            </motion.div>
+          )}
+          
+          {viewMode === 'greenscreen' && (
+            <motion.div
+              key="greenscreen"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center justify-center h-full w-full"
+            >
+              {/* Empty container for pure greenscreen */}
             </motion.div>
           )}
         </AnimatePresence>

@@ -54,4 +54,4 @@ export type AllianceType = 'blue' | 'red';
 /**
  * View modes for team display
  */
-export type ViewMode = 'all' | 'alliance' | 'robot' | 'rankings';
+export type ViewMode = 'all' | 'alliance' | 'robot' | 'rankings' | 'greenscreen';

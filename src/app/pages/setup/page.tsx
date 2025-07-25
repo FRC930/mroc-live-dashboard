@@ -187,44 +187,17 @@ export default function SetupPage() {
     messagingService.changeViewMode('rankings');
   };
 
+  const showGreenscreenView = () => {
+    const messagingService = getMatchMessagingService();
+    messagingService.changeViewMode('greenscreen');
+  };
+
   // Show robot view for a specific team
   const showTeamRobotView = () => {
     if (!selectedTeam) return;
-    
-    // Find if the team is in the current match
-    const isInBlueAlliance = blueTeams.includes(selectedTeam);
-    const isInRedAlliance = redTeams.includes(selectedTeam);
-    
+
     const messagingService = getMatchMessagingService();
-    
-    if (isInBlueAlliance) {
-      // If team is in blue alliance, use its index
-      const teamIndex = blueTeams.indexOf(selectedTeam);
-      messagingService.selectRobot('blue', teamIndex);
-    } else if (isInRedAlliance) {
-      // If team is in red alliance, use its index
-      const teamIndex = redTeams.indexOf(selectedTeam);
-      messagingService.selectRobot('red', teamIndex);
-    } else {
-      // If team is not in current match, we need to add it temporarily
-      // We'll use blue alliance and index 0 as default
-      const tempBlueTeams = [...blueTeams];
-      tempBlueTeams[0] = selectedTeam;
-      
-      // Update match data with the temporary team
-      messagingService.updateMatchData({
-        matchNumber,
-        blueTeams: tempBlueTeams.map(number => ({ number })),
-        redTeams: redTeams.map(number => ({ number })),
-        eventKey
-      });
-      
-      // Then select the robot view for this team
-      messagingService.selectRobot('blue', 0);
-    }
-    
-    // Change view mode to robot
-    messagingService.changeViewMode('robot');
+    messagingService.selectSpecificTeam(selectedTeam, 'blue');
   };
 
   return (
@@ -260,7 +233,10 @@ export default function SetupPage() {
                         ))}
                     </select>
                     <button
-                      onClick={showTeamRobotView}
+                      onClick={() => {
+                        console.log('CLICK')
+                        showTeamRobotView()
+                      }}
                       disabled={!selectedTeam}
                       className={`col-span-3 bg-purple-800 hover:bg-purple-700 text-white px-4 py-2 rounded-md ${
                         !selectedTeam ? 'opacity-50 cursor-not-allowed' : ''
@@ -466,6 +442,15 @@ export default function SetupPage() {
                       className="bg-green-800 hover:bg-green-700 text-white px-4 py-2 rounded-md"
                     >
                       Show Rankings
+                    </button>
+                  </div>
+                  
+                  <div className="mt-4 grid grid-cols-1 gap-4">
+                    <button
+                      onClick={showGreenscreenView}
+                      className="bg-green-800 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+                    >
+                      Show Greenscreen
                     </button>
                   </div>
 

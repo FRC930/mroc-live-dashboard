@@ -74,6 +74,10 @@ class MatchMessagingService {
         this.notifyListeners(type, payload);
       });
     });
+
+    this.socket.onAny((event, ...args) => {
+      console.log(`!!!!!!Received event: ${event} with args:`, args);
+    });
     
     // Log connection status
     this.socket.on('connect', () => {
@@ -91,6 +95,7 @@ class MatchMessagingService {
   
   // Send a message to all other connected clients
   public sendMessage<T extends MessageType>(type: T, payload: MessagePayloadMap[T]): void {
+    console.log(`Sending message: ${type} with payload:`, payload);
     // Emit the message to the Socket.IO server
     this.socket.emit(type, payload);
     
@@ -100,6 +105,7 @@ class MatchMessagingService {
   
   // Subscribe to a specific message type
   public subscribe<T extends MessageType>(type: T, callback: (payload: MessagePayloadMap[T]) => void): () => void {
+    console.log(`Subscribing to message type: ${type}`);
     if (!this.listeners.has(type)) {
       this.listeners.set(type, []);
     }
@@ -140,6 +146,7 @@ class MatchMessagingService {
   }
   
   public selectRobot(alliance: AllianceType, teamIndex: number): void {
+    this.sendMessage('LOOK_HERE' as MessageType, { teamIndex, alliance });
     this.sendMessage(MessageType.ROBOT_SELECTION, { alliance, teamIndex });
   }
   
@@ -147,7 +154,8 @@ class MatchMessagingService {
     this.sendMessage(MessageType.RANKINGS_PAGE_CHANGE, { page });
   }
   
-  public selectSpecificTeam(teamNumber: string, alliance: AllianceType = 'blue'): void {
+  public selectSpecificTeam(teamNumber: string, alliance: AllianceType = 'blue'): void {    
+    this.sendMessage('LOOK_HERE' as MessageType, { teamNumber, alliance });
     this.sendMessage(MessageType.SPECIFIC_TEAM_SELECTION, { teamNumber, alliance });
   }
   

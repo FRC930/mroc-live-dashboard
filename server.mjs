@@ -73,6 +73,11 @@ app.prepare().then(() => {
       socket.broadcast.emit('ROBOT_SELECTION', payload);
     });
 
+    socket.on('SPECIFIC_TEAM_SELECTION', (payload) => {
+      console.log('SPECIFIC_TEAM_SELECTION received:', payload);
+      socket.broadcast.emit('SPECIFIC_TEAM_SELECTION', payload);
+    });
+
     socket.on('disconnect', () => {
       console.log('A client disconnected:', socket.id);
     });
