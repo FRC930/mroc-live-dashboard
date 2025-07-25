@@ -19,9 +19,9 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
     <motion.div
       key={`alliance-view-${alliance}-${teams.map(t => t.number).join('-')}`}
       className="h-[calc(100vh-8rem)] relative z-10 w-full px-[calc(25px)] top-[10px] flex items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ clipPath: 'inset(0 0 100% 0)' }}
+      animate={{ clipPath: 'inset(0 0 0 0)' }}
+      exit={{ clipPath: 'inset(100% 0 0 0)' }}
       transition={{ duration: 0.5 }}
     >
       <div className="w-full">
@@ -36,9 +36,9 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
             <motion.div
               key={`team-${index}`}
               className={`flex items-center p-4 mb-4 rounded-lg shadow-xl border-2 ${allianceColor === 'blue' ? 'bg-blue-900 border-blue-700' : 'bg-red-900 border-red-700'}`}
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: index * 0.1 }}
+              initial={{ clipPath: 'inset(0 100% 0 0)' }}
+              animate={{ clipPath: 'inset(0 0 0 0)' }}
+              transition={{ delay: index * 0.1, duration: 0.4 }}
             >
               <div className="w-1/3 flex justify-center items-center overflow-visible">
                 {team.number ? (

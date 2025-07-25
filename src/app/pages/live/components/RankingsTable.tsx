@@ -117,7 +117,7 @@ const RankingsTable = ({
         className="bg-black rounded-lg shadow-xl overflow-hidden p-8 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        exit={{ opacity: 0, scale: 0 }}
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.91)' }}
       >
         <h2 className="text-2xl font-bold mb-4">Team Rankings</h2>
@@ -135,8 +135,9 @@ const RankingsTable = ({
       className="bg-black rounded-lg  overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={{ backgroundColor: 'rgba(0, 0, 0, .95)' }}>
+      exit={{ opacity: 0, scale: 0 }}
+      style={{ backgroundColor: 'rgba(0, 0, 0, .95)' }}
+    >
       <div className="p-6 bg-blue-900 border-b-2 border-blue-700">
         <h2 className="text-3xl font-bold text-center text-white">
           Team Rankings {eventKey && `- Event: ${eventKey}`}

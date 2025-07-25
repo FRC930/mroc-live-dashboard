@@ -19,9 +19,9 @@ export default function AllTeamsView({
     <motion.div 
       key={`all-teams-view-${matchNumber}-${blueTeams.map(t => t.number).join('-')}-${redTeams.map(t => t.number).join('-')}`}
       className="flex flex-col justify-between items-center h-[calc(100vh-8rem)] relative z-10 w-full px-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ clipPath: 'inset(0 0 100% 0)' }}
+      animate={{ clipPath: 'inset(0 0 0 0)' }}
+      exit={{ clipPath: 'inset(100% 0 0 0)' }}
       transition={{ duration: 0.5 }}
     >
       {/* Match Header */}
@@ -45,12 +45,12 @@ export default function AllTeamsView({
         {/* Blue Alliance */}
         <motion.div 
           className="w-[45%] h-full"
-          initial={{ x: -50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          initial={{ clipPath: 'inset(0 0 100% 0)' }}
+          animate={{ clipPath: 'inset(0 0 0 0)' }}
+          transition={{ duration: 0.7, delay: 0.1 }}
         >
           <div className="bg-gradient-to-r from-blue-700 to-blue-500 p-1 mb-4 rounded-md ">
-            <div className="bg-blue-900 bg-opacity-90 p-3">
+            <div className="bg-blue-900 p-3">
               <h2 className="text-3xl font-bold text-center text-blue-200 tracking-wider flex items-center justify-center">
                 BLUE ALLIANCE
               </h2>
@@ -71,9 +71,9 @@ export default function AllTeamsView({
         {/* VS Divider */}
         <motion.div 
           className="flex flex-col items-center justify-center w-[10%]"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          initial={{ clipPath: 'inset(50% 50% 50% 50%)' }}
+          animate={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+          transition={{ duration: 0.5, delay: 0.3 }}
         >
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-red-600 rounded-full"></div>
@@ -97,12 +97,12 @@ export default function AllTeamsView({
         {/* Red Alliance */}
         <motion.div 
           className="w-[45%] h-full"
-          initial={{ x: 50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          initial={{ clipPath: 'inset(0 0 100% 0)' }}
+          animate={{ clipPath: 'inset(0 0 0 0)' }}
+          transition={{ duration: 0.7, delay: 0.1 }}
         >
           <div className="bg-gradient-to-r from-red-500 to-red-700 p-1 mb-4 rounded-md">
-            <div className="bg-red-900 bg-opacity-90 p-3">
+            <div className="bg-red-900 p-3">
               <h2 className="text-3xl font-bold text-center text-red-200 tracking-wider flex items-center justify-center">
                 RED ALLIANCE
               </h2>
@@ -141,9 +141,9 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
   return (
     <motion.div 
       className={`flex flex-col items-center ${gradientBg} rounded-lg  border-2 ${borderColor} overflow-hidden`}
-      // style={{ boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)' }}
-      initial={{ y: 30, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       transition={{ duration: 0.5, delay: animDelay }}
     >
       {/* Team Number Header */}

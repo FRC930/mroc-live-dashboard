@@ -87,12 +87,10 @@ export default function LivePage() {
       setSpecificTeam(null); // Clear specific team when selecting a robot by alliance/index
       setViewMode('robot');
     });
-    
-    console.log('hey?')
+
     // Subscribe to specific team selection
     const specificTeamUnsubscribe = messagingService.subscribe(MessageType.SPECIFIC_TEAM_SELECTION, (payload) => {
       const { teamNumber, alliance } = payload;
-      console.log(`Specific team selection received: ${teamNumber} (${alliance})`)
       // Find the team in all teams
       const team = teams.find(t => t.number === teamNumber);
       
@@ -150,9 +148,9 @@ export default function LivePage() {
           {viewMode === 'all' && (
             <motion.div
               key="all-teams"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ clipPath: 'inset(0 0 100% 0)' }}
+              animate={{ clipPath: 'inset(0 0 0 0)' }}
+              exit={{ clipPath: 'inset(100% 0 0 0)' }}
               transition={{ duration: 0.5 }}
             >
               <AllTeamsView
@@ -166,9 +164,9 @@ export default function LivePage() {
           {viewMode === 'alliance' && (
             <motion.div
               key="alliance"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ clipPath: 'inset(0 0 100% 0)' }}
+              animate={{ clipPath: 'inset(0 0 0 0)' }}
+              exit={{ clipPath: 'inset(100% 0 0 0)' }}
               transition={{ duration: 0.5 }}
             >
               <AllianceView
@@ -181,9 +179,9 @@ export default function LivePage() {
           {viewMode === 'robot' && getSelectedTeam() && (
             <motion.div
               key="robot"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ scaleY: 0, originY: 1 }}
+              animate={{ scaleY: 1 }}
+              exit={{ scaleY: 0, originY: 0 }}
               transition={{ duration: 0.5 }}
             >
               <RobotView
@@ -196,9 +194,9 @@ export default function LivePage() {
           {viewMode === 'rankings' && (
             <motion.div
               key="rankings"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ clipPath: 'inset(0 0 100% 0)' }}
+              animate={{ clipPath: 'inset(0 0 0 0)' }}
+              exit={{ clipPath: 'inset(100% 0 0 0)' }}
               transition={{ duration: 0.5 }}
               className="flex items-center justify-center h-full w-full"
             >
@@ -217,9 +215,9 @@ export default function LivePage() {
           {viewMode === 'greenscreen' && (
             <motion.div
               key="greenscreen"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ clipPath: 'inset(0 0 100% 0)' }}
+              animate={{ clipPath: 'inset(0 0 0 0)' }}
+              exit={{ clipPath: 'inset(100% 0 0 0)' }}
               transition={{ duration: 0.5 }}
               className="flex items-center justify-center h-full w-full"
             >
@@ -234,16 +232,6 @@ export default function LivePage() {
         </div>
         <div className="absolute bottom-2 right-4 text-white text-sm font-semibold z-50 bg-black px-2 py-1 rounded">
           Powered by The Blue Alliance
-        </div>
-        
-        {/* Logo at bottom center */}
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none">
-          <img 
-            src="/images/logo.png" 
-            alt="Team Logo" 
-            className="max-h-28 w-auto object-contain drop-shadow-[0_0_1px_rgba(0,0,0,1)] filter"
-            style={{ filter: 'drop-shadow(0 0 2px rgba(0,0,0,1))' }}
-          />
         </div>
       </motion.div>
     </div>

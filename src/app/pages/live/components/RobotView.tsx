@@ -81,9 +81,9 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
     <motion.div
       key={`robot-view-${alliance}-${team.number}`}
       className="h-[80vh] absolute top-0 z-2 w-full p-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ scaleY: 1 }}
+      animate={{ scaleY: 1 }}
+      exit={{ scaleY: 0 }}
       transition={{ duration: 0.5 }}
     >
       <div className={`min-h-[80vh] ${bgColor} rounded-lg shadow-xl p-6 border-2 ${borderColor}`}
@@ -94,9 +94,9 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
         <div className="flex flex-col md:flex-row gap-8">
           <motion.div
             className="w-full md:w-1/3 flex justify-center items-start"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2 }}
+            initial={{ scaleX: 1 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
           >
             {team.number ? (
               <div className="relative w-96 h-96 mt-16 overflow-visible">
@@ -125,9 +125,9 @@ export default function RobotView({ team, alliance }: RobotViewProps) {
           <div className="w-full md:w-2/3">
             <motion.div
               className="grid grid-cols-1 md:col-span gap-4"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              initial={{ scaleX: 1 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
             >
               <div className="bg-gray-800 p-4 rounded md:col-span-2 border border-gray-700">
                 <h3 className="text-2xl font-bold mb-2">Team Stats</h3>
