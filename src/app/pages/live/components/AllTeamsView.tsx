@@ -141,9 +141,8 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
   return (
     <motion.div 
       className={`flex flex-col items-center ${gradientBg} rounded-lg  border-2 ${borderColor} overflow-hidden`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ clipPath: 'inset(100% 0 0 0)' }}
+      animate={{ clipPath: 'inset(0 0 0 0)' }}
       transition={{ duration: 0.5, delay: animDelay }}
     >
       {/* Team Number Header */}
