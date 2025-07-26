@@ -219,7 +219,8 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
       {/* Robot Image */}
       <div className={`w-full flex-grow ${statsBg} flex items-center justify-center overflow-hidden relative`}>
         {team.number ? (
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full ">
+            
             <Image 
               src={`https://firebasestorage.googleapis.com/v0/b/mroc-live-dashboard.firebasestorage.app/o/${team.number}.png?alt=media`}
               alt={`Team ${team.number} robot`}
@@ -229,7 +230,9 @@ function TeamCard({ team, position, alliance }: { team: TeamData, position: numb
                 objectFit: 'contain',
                 objectPosition: 'center center',
                 transform: 'scale(1.2)',
-                transformOrigin: 'center center'
+                transformOrigin: 'center center',
+                marginTop: '-40px',
+                marginBottom: '120px'
               }}
               onError={(e) => {
                 // Fallback to emoji if image fails to load

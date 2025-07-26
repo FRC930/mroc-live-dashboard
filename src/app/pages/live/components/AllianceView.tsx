@@ -42,7 +42,7 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
             >
               <div className="w-1/3 flex justify-center items-center overflow-visible">
                 {team.number ? (
-                  <div className="relative w-48 h-48 overflow-visible">
+                  <div className="relative w-40 h-40  overflow-visible">
                     <Image
                       src={`https://firebasestorage.googleapis.com/v0/b/mroc-live-dashboard.firebasestorage.app/o/${team.number}.png?alt=media`}
                       alt={`Team ${team.number} robot`}
@@ -51,7 +51,9 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
                         objectFit: 'contain',
                         objectPosition: 'center bottom',
                         transform: 'scale(1.6)',
-                        transformOrigin: 'center bottom'
+                        transformOrigin: 'center bottom',
+                        marginTop: '45px',
+                        marginBottom: '-40px'
                       }}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
