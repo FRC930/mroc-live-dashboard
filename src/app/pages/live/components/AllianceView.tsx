@@ -72,7 +72,11 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
                 <div className="grid grid-cols-2 gap-2">
                   <div className="bg-gray-800 p-2 rounded border border-gray-700">
                     <div className="text-sm opacity-70">Record</div>
-                    <div className="text-xl font-bold">{(team as any).record || '0-0-0'}</div>
+                    <div className="text-xl font-bold">
+                    {(team?.ranking_data?.record?.wins ?? 0)}-
+  {(team?.ranking_data?.record?.losses ?? 0)}-
+  {(team?.ranking_data?.record?.ties ?? 0)}
+                    </div>
                   </div>
                   <div className="bg-gray-800 p-2 rounded border border-gray-700">
                     <div className="text-sm opacity-70">Location</div>
@@ -81,7 +85,7 @@ export default function AllianceView({ teams, alliance }: AllianceViewProps) {
                   
                   <div className="bg-gray-800 p-2 rounded border border-gray-700">
                     <div className="text-sm opacity-70">Ranking</div>
-                    <div className="text-xl font-bold">{team.rank || 'Rank not found'}</div>
+                    <div className="text-xl font-bold">{(team as any).rank || 'Rank not found'}</div>
                   </div>
                   <div className="bg-gray-800 p-2 rounded border border-gray-700">
                     <div className="text-sm opacity-70">Robot Name</div>
