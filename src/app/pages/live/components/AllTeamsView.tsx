@@ -34,7 +34,7 @@ export default function AllTeamsView({
         >
           <div className="bg-black bg-opacity-80 rounded-md p-3 flex justify-center items-center">
             <h1 className="text-4xl font-extrabold text-white text-center tracking-wider">
-              MATCH {matchNumber}
+               {matchNumber}
             </h1>
           </div>
         </motion.div>
